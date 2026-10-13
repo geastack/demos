@@ -1,0 +1,217 @@
+/* Boot: five equaliser bars (the mark) bounce up at (240, 84) inside two
+   rippling rings; the wordmark and tagline rise beneath. */
+
+.boot {
+  background-color: #100c14;
+}
+
+.boot-stage {
+  position: absolute;
+  width: 480px;
+  height: 272px;
+}
+
+.boot-mark {
+  position: absolute;
+  left: 208px;
+  top: 60px;
+  width: 64px;
+  height: 48px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.boot-bar {
+  width: 8px;
+  height: 48px;
+  border-radius: 4px;
+  transform-origin: 50% 100%;
+}
+
+.boot-bar-1 {
+  background-color: #f08050;
+  animation: bar-1 1500ms cubic-bezier(0.3, 0.7, 0.3, 1) 140ms both;
+}
+
+.boot-bar-2 {
+  background-color: #e85888;
+  animation: bar-2 1500ms cubic-bezier(0.3, 0.7, 0.3, 1) 200ms both;
+}
+
+.boot-bar-3 {
+  background-color: #a868e0;
+  animation: bar-3 1500ms cubic-bezier(0.3, 0.7, 0.3, 1) 260ms both;
+}
+
+.boot-bar-4 {
+  background-color: #5890e8;
+  animation: bar-4 1500ms cubic-bezier(0.3, 0.7, 0.3, 1) 320ms both;
+}
+
+.boot-bar-5 {
+  background-color: #40c4c8;
+  animation: bar-5 1500ms cubic-bezier(0.3, 0.7, 0.3, 1) 380ms both;
+}
+
+@keyframes bar-1 {
+  0% {
+    transform: scale(1, 0.08);
+  }
+
+  25% {
+    transform: scale(1, 0.85);
+  }
+
+  45% {
+    transform: scale(1, 0.2);
+  }
+
+  65% {
+    transform: scale(1, 0.65);
+  }
+
+  100% {
+    transform: scale(1, 0.5);
+  }
+}
+
+@keyframes bar-2 {
+  0% {
+    transform: scale(1, 0.08);
+  }
+
+  25% {
+    transform: scale(1, 1);
+  }
+
+  45% {
+    transform: scale(1, 0.52);
+  }
+
+  65% {
+    transform: scale(1, 0.97);
+  }
+
+  100% {
+    transform: scale(1, 0.82);
+  }
+}
+
+@keyframes bar-3 {
+  0% {
+    transform: scale(1, 0.08);
+  }
+
+  25% {
+    transform: scale(1, 1);
+  }
+
+  45% {
+    transform: scale(1, 0.7);
+  }
+
+  65% {
+    transform: scale(1, 1);
+  }
+
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+@keyframes bar-4 {
+  0% {
+    transform: scale(1, 0.08);
+  }
+
+  25% {
+    transform: scale(1, 1);
+  }
+
+  45% {
+    transform: scale(1, 0.38);
+  }
+
+  65% {
+    transform: scale(1, 0.83);
+  }
+
+  100% {
+    transform: scale(1, 0.68);
+  }
+}
+
+@keyframes bar-5 {
+  0% {
+    transform: scale(1, 0.08);
+  }
+
+  25% {
+    transform: scale(1, 0.77);
+  }
+
+  45% {
+    transform: scale(1, 0.15);
+  }
+
+  65% {
+    transform: scale(1, 0.57);
+  }
+
+  100% {
+    transform: scale(1, 0.42);
+  }
+}
+
+/* Rings ripple out from the mark like a speaker cone. */
+.boot-ring {
+  position: absolute;
+  left: 180px;
+  top: 24px;
+  width: 116px;
+  height: 116px;
+  border-radius: 60px;
+  border: 2px solid rgba(232, 88, 136, 0.6);
+  opacity: 0;
+}
+
+.boot-ring-1 {
+  animation: ripple 1300ms cubic-bezier(0.2, 0.8, 0.2, 1) 300ms both;
+}
+
+.boot-ring-2 {
+  animation: ripple 1300ms cubic-bezier(0.2, 0.8, 0.2, 1) 650ms both;
+}
+
+@keyframes ripple {
+  from {
+    opacity: 0.8;
+    transform: scale(0.5);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(1.8);
+  }
+}
+
+.boot-row {
+  position: absolute;
+  left: 0;
+  width: 480px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.boot-word {
+  top: 128px;
+  animation: rise 560ms cubic-bezier(0.2, 0.8, 0.2, 1) 600ms both;
+}
+
+.boot-tagline {
+  top: 188px;
+  animation: rise 560ms cubic-bezier(0.2, 0.8, 0.2, 1) 820ms both;
+}

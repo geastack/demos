@@ -1,0 +1,32 @@
+{
+  "name": "@geastack/demos",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "GeaStack showcase demos: one codebase per demo, responsive across the STM32F746G-Discovery, ESP32-S3 AMOLED and ESP32-S31 Mosaico.",
+  "workspaces": [
+    "apps/*",
+    "shared"
+  ],
+  "scripts": {
+    "check": "npm run check --workspaces --if-present && biome check",
+    "format": "biome format --write"
+  },
+  "dependencies": {
+    "@geajs/core": "^1.5.1",
+    "@geastack/core": "^0.1.41",
+    "@geastack/gea3d": "^0.1.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.14",
+    "@geastack/cli": "^0.1.102",
+    "@geastack/compiler": "^1.0.33",
+    "@geastack/geatsc-plugin-gea": "^0.1.22",
+    "@geastack/targets": "^0.1.102",
+    "@phosphor-icons/core": "^2.1.1",
+    "sharp": "^0.35.5",
+    "typescript": "~5.9.3",
+    "vite": "latest"
+  },
+  "license": "GPL-3.0-only"
+}

@@ -1,0 +1,7 @@
+{
+  "name": "@demos/shared",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Fonts, styles and native modules shared by the demos.",
+  "license": "GPL-3.0-only"
+}

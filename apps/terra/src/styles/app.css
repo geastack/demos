@@ -1,0 +1,65 @@
+/*
+ * Terra is one full-screen canvas; the HUD is painted into it (lib/hud.ts).
+ * No background here: the canvas covers every pixel.
+ */
+
+.app {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.view {
+  width: 100%;
+  height: 100%;
+}
+
+/*
+ * Font atlases for the canvas HUD: the build bakes one per (family, size)
+ * pair found on a single-class rule, and ctx.font picks them up by name.
+ */
+
+.font-mono-12 {
+  font-family: "Plex Mono M";
+  font-size: 12px;
+}
+
+.font-mono-16 {
+  font-family: "Plex Mono M";
+  font-size: 16px;
+}
+
+.font-label-12 {
+  font-family: "Space Grotesk M";
+  font-size: 12px;
+}
+
+.font-title-24 {
+  font-family: "Space Grotesk B";
+  font-size: 24px;
+  --gea-font-charset: "ACDEGILMNPRSU";
+}
+
+/* The large class (480x480, 410x502): one size up. */
+
+.font-mono-14 {
+  font-family: "Plex Mono M";
+  font-size: 14px;
+}
+
+.font-mono-18 {
+  font-family: "Plex Mono M";
+  font-size: 18px;
+}
+
+.font-label-14 {
+  font-family: "Space Grotesk M";
+  font-size: 14px;
+}
+
+.font-title-28 {
+  font-family: "Space Grotesk B";
+  font-size: 28px;
+  --gea-font-charset: "ACDEGILMNPRSU";
+}

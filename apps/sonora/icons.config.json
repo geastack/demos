@@ -1,0 +1,24 @@
+{
+  "icons": [
+    { "name": "play", "glyph": "play", "weight": "fill", "size": 22, "color": "#101010" },
+    { "name": "pause", "glyph": "pause", "weight": "fill", "size": 22, "color": "#101010" },
+    { "name": "play-small", "glyph": "play", "weight": "fill", "size": 16, "color": "#101010" },
+    { "name": "prev", "glyph": "skip-back", "weight": "fill", "size": 22, "color": "#F8F8F8" },
+    { "name": "next", "glyph": "skip-forward", "weight": "fill", "size": 22, "color": "#F8F8F8" },
+    { "name": "queue", "glyph": "queue", "weight": "bold", "size": 20, "color": "#F8F8F8" },
+    { "name": "volume", "glyph": "speaker-high", "weight": "bold", "size": 20, "color": "#F8F8F8" },
+    { "name": "vol-high", "glyph": "speaker-high", "weight": "bold", "size": 24, "color": "#F8F8F8" },
+    { "name": "vol-low", "glyph": "speaker-low", "weight": "bold", "size": 24, "color": "#F8F8F8" },
+    { "name": "vol-mute", "glyph": "speaker-x", "weight": "bold", "size": 24, "color": "#F8F8F8" },
+    { "name": "library", "glyph": "squares-four", "weight": "bold", "size": 18, "color": "#F8F8F8" },
+    { "name": "moon", "glyph": "moon", "weight": "fill", "size": 16, "color": "#F8F8F8" },
+    { "name": "speaker", "glyph": "speaker-hifi", "weight": "bold", "size": 14, "color": "#F8F8F8" },
+    { "name": "caret", "glyph": "caret-down", "weight": "bold", "size": 12, "color": "#F8F8F8" },
+    { "name": "back", "glyph": "caret-left", "weight": "bold", "size": 20, "color": "#F8F8F8" },
+    { "name": "handle", "glyph": "dots-six-vertical", "weight": "bold", "size": 16, "color": "#F8F8F8" },
+    { "name": "check", "glyph": "check", "weight": "bold", "size": 14, "color": "#101010" },
+    { "name": "living", "glyph": "couch", "weight": "bold", "size": 24, "color": "#F8F8F8" },
+    { "name": "kitchen", "glyph": "cooking-pot", "weight": "bold", "size": 24, "color": "#F8F8F8" },
+    { "name": "bedroom", "glyph": "bed", "weight": "bold", "size": 24, "color": "#F8F8F8" }
+  ]
+}

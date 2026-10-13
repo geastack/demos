@@ -1,0 +1,229 @@
+.oven-now {
+  position: absolute;
+}
+
+/* The dial canvas is 216 px square at (132, 44): its centre (240, 152). */
+.dial {
+  position: absolute;
+}
+
+.dial-touch {
+  position: absolute;
+}
+
+.dial-mode {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.dial-hint {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+/* Shifted right by half the degree sign so the digits centre. */
+.dial-readout {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  animation: fade-in 420ms cubic-bezier(0.2, 0.8, 0.2, 1) 120ms both;
+}
+
+/* Each 5 degree step rolls the numeral in from the direction of travel; two
+   identical keyframes per direction let consecutive steps restart it.
+   Class-triggered animations fill forwards. */
+.roll-up-a {
+  animation: roll-up-a 180ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.roll-up-b {
+  animation: roll-up-b 180ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.roll-down-a {
+  animation: roll-down-a 180ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.roll-down-b {
+  animation: roll-down-b 180ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes roll-up-a {
+  from {
+    opacity: 0.3;
+    transform: translate(0px, 12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(0px, 0px);
+  }
+}
+
+@keyframes roll-up-b {
+  from {
+    opacity: 0.3;
+    transform: translate(0px, 12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(0px, 0px);
+  }
+}
+
+@keyframes roll-down-a {
+  from {
+    opacity: 0.3;
+    transform: translate(0px, -12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(0px, 0px);
+  }
+}
+
+@keyframes roll-down-b {
+  from {
+    opacity: 0.3;
+    transform: translate(0px, -12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(0px, 0px);
+  }
+}
+
+/* The knob rides the arc's tip: a cream disc in an ember rim. */
+.knob {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-radius: 14px;
+  background-color: var(--ember);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.knob-core {
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  background-color: var(--text);
+}
+
+/* ---- Timer ---- */
+
+.timer-set {
+  position: absolute;
+  left: 16px;
+  top: 76px;
+  width: 108px;
+  display: flex;
+  flex-direction: column;
+}
+
+.timer-buttons {
+  position: relative;
+  margin-top: 12px;
+  width: 96px;
+  height: 40px;
+}
+
+.step-button {
+  left: 0;
+  top: 0;
+}
+
+.step-plus {
+  left: 52px;
+}
+
+.timer-end {
+  margin-top: 12px;
+}
+
+/* ---- Stacked layouts: the timer sits in the bottom row with Start ---- */
+
+.timer-end-row {
+  position: absolute;
+  left: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.timer-row {
+  position: absolute;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.timer-label {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- Mode chips: the lit highlight slides between them ---- */
+
+.modes {
+  position: absolute;
+  border-radius: 17px;
+  background-color: var(--surface);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mode-highlight {
+  position: absolute;
+  border-radius: 17px;
+  background: linear-gradient(90deg, #f05820 0%, #f8a040 100%);
+}
+
+.mode-chip {
+  position: relative;
+  box-sizing: border-box;
+  padding: 0 10px;
+  border-radius: 17px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+
+.mode-chip:active {
+  transform: scale(0.95);
+}
+
+.manual-start {
+  position: absolute;
+}
+
+/* Stacked: the chips form a two by two grid of 40 px touch targets. */
+.modes-grid {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+  border-radius: 20px;
+}
+
+.mode-highlight-big {
+  border-radius: 20px;
+}
+
+.mode-chip-big {
+  border-radius: 20px;
+  justify-content: center;
+}

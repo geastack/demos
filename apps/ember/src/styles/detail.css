@@ -1,0 +1,62 @@
+.detail-head {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+}
+
+.specs {
+  position: absolute;
+  height: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
+.spec-gap {
+  width: 8px;
+}
+
+/* ---- Steps: numbered rows on a thin timeline ---- */
+
+.steps {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+}
+
+.steps-line {
+  position: absolute;
+  left: 9px;
+  top: 10px;
+  width: 2px;
+  background-color: var(--surface-2);
+}
+
+.step-row {
+  height: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.step-number {
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  border: 1px solid var(--line);
+  background-color: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-number-first {
+  border-color: #885028;
+}
+
+.start {
+  position: absolute;
+}

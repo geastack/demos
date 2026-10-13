@@ -1,0 +1,222 @@
+.glow-ready {
+  animation: bloom-in 900ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes bloom-in {
+  from {
+    transform: scale(0.5);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+/* ---- The check: an amber coin that pops, with two rings bursting out ---- */
+
+.badge {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border-radius: 28px;
+  background-image: radial-gradient(#f8d080, #f8a040 55%, #f06020);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pop 560ms cubic-bezier(0.2, 0.8, 0.2, 1.4) 200ms both;
+}
+
+.badge-burst {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border-radius: 28px;
+  box-sizing: border-box;
+  border: 2px solid var(--amber);
+  animation: ring-out 900ms cubic-bezier(0.2, 0.8, 0.2, 1) 380ms both;
+}
+
+.badge-burst-late {
+  border-color: var(--ember);
+  animation: ring-out 900ms cubic-bezier(0.2, 0.8, 0.2, 1) 560ms both;
+}
+
+@keyframes ring-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(2);
+  }
+}
+
+.ready-copy {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+}
+
+.ready-word {
+  animation: settle 640ms cubic-bezier(0.2, 0.8, 0.2, 1.2) 300ms both;
+}
+
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: translate(0px, 18px) scale(0.92);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+.ready-actions {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.warm-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: var(--muted);
+}
+
+.warm-dot-on {
+  background-color: var(--amber);
+  animation: breathe-warm 1400ms ease-in-out infinite alternate;
+}
+
+@keyframes breathe-warm {
+  from {
+    transform: scale(0.7);
+  }
+
+  to {
+    transform: scale(1.2);
+  }
+}
+
+.warm-on {
+  background-color: #402410;
+}
+
+/* ---- Sparks: small embers rising and fading on staggered loops ---- */
+
+.sparks {
+  position: absolute;
+  top: 0;
+  pointer-events: none;
+  width: 480px;
+  height: 272px;
+}
+
+.spark-dot {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: var(--amber);
+}
+
+.sd-1 {
+  left: 40px;
+  top: 64px;
+  animation: float-a 1800ms ease-out 400ms infinite both;
+}
+
+.sd-2 {
+  left: 60px;
+  top: 58px;
+  background-color: #f8d080;
+  animation: float-b 2200ms ease-out 700ms infinite both;
+}
+
+.sd-3 {
+  left: 28px;
+  top: 70px;
+  animation: float-b 2000ms ease-out 1100ms infinite both;
+}
+
+.sd-4 {
+  left: 300px;
+  top: 150px;
+  animation: float-a 2600ms ease-out 300ms infinite both;
+}
+
+.sd-5 {
+  left: 344px;
+  top: 120px;
+  background-color: #f8d080;
+  animation: float-b 2400ms ease-out 900ms infinite both;
+}
+
+.sd-6 {
+  left: 392px;
+  top: 160px;
+  animation: float-a 2800ms ease-out 1500ms infinite both;
+}
+
+.sd-7 {
+  left: 420px;
+  top: 110px;
+  animation: float-b 2300ms ease-out 600ms infinite both;
+}
+
+.sd-8 {
+  left: 268px;
+  top: 96px;
+  background-color: #f8d080;
+  animation: float-a 2500ms ease-out 1300ms infinite both;
+}
+
+.sd-9 {
+  left: 368px;
+  top: 76px;
+  animation: float-a 2100ms ease-out 1900ms infinite both;
+}
+
+.sd-10 {
+  left: 440px;
+  top: 190px;
+  animation: float-b 2700ms ease-out 1000ms infinite both;
+}
+
+@keyframes float-a {
+  0% {
+    opacity: 0;
+    transform: translate(0px, 0px) scale(1);
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-6px, -56px) scale(0.5);
+  }
+}
+
+@keyframes float-b {
+  0% {
+    opacity: 0;
+    transform: translate(0px, 0px) scale(1);
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(8px, -48px) scale(0.5);
+  }
+}

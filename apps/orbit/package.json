@@ -1,0 +1,30 @@
+{
+  "name": "@geastack/demo-orbit",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "icons": "node ../../shared/scripts/build-icons.mjs"
+  },
+  "dependencies": {
+    "@demos/shared": "*",
+    "@geastack/core": "^0.1.41",
+    "@geastack/gea3d": "^0.1.1"
+  },
+  "gea": {
+    "id": "orbit",
+    "name": "Orbit",
+    "entry": "src/index.tsx",
+    "targets": {
+      "web": true,
+      "esp32": true,
+      "stm32": true
+    },
+    "cssDevicePixelRatio": 1,
+    "nativeSources": [
+      "@geastack/gea3d/native/gea3d_native.cpp"
+    ]
+  },
+  "license": "GPL-3.0-only"
+}

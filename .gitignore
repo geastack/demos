@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Build output
+.gea/
+dist/
+build/
+*.elf
+*.bin
+*.hex
+*.map
+
+# Logs and caches
+*.log
+.cache/
+__pycache__/
+*.pyc
+
+# Secrets
+.env
+.env.*
+!apps/axel/.env.example
+
+# OS and editor files
+.DS_Store
+.vscode/
+.idea/

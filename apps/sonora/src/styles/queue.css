@@ -1,0 +1,95 @@
+/* The queue. Landscape: what plays on the left (144 px cover at 16, 64), the
+   up-next list on the right (x 176, 288 px wide, 42 px rows from y 56).
+   Stacked: a 96 px cover and the track beside it, the list under them.
+   Positions come from layout.ts (inline). */
+
+/* Landscape: from the Now Playing art (192 px centred on 120, 136). */
+.queue-art {
+  position: absolute;
+}
+
+.queue-art-fly {
+  animation: from-now 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes from-now {
+  from {
+    transform: translate(32px, 0px) scale(1.3333);
+  }
+
+  to {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+.queue-now {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.queue-now-head {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.queue-now-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.queue-head {
+  position: absolute;
+  height: 32px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.list {
+  position: absolute;
+  overflow: hidden;
+}
+
+/* Rows move by layout (left / top), never by transform: the list's clip
+   does not apply to transformed children. */
+.row {
+  position: absolute;
+  border-radius: 10px;
+  flex-direction: row;
+  align-items: center;
+}
+
+.row-lifted {
+  background-color: var(--glass-2);
+}
+
+.row-thumb {
+  width: 32px;
+  height: 32px;
+  margin-left: 4px;
+}
+
+.row-text {
+  margin-left: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.row-time {
+  width: 36px;
+  text-align: right;
+}
+
+.row-grip {
+  margin-left: 12px;
+  opacity: 0.5;
+}
+
+.list-touch {
+  position: absolute;
+}

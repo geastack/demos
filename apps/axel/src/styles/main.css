@@ -1,0 +1,191 @@
+@import "../../../../shared/styles/fonts.css";
+
+body {
+  margin: 0;
+  width: 480px;
+  height: 480px;
+  background: #071315;
+}
+
+.axel-console {
+  position: relative;
+  width: 480px;
+  height: 480px;
+  background: #071315;
+  color: #e1f1ed;
+  font-family: "Outfit M";
+}
+
+.axel-camera-light {
+  width: 7px;
+  height: 7px;
+  border-radius: 4px;
+  background: #325052;
+  margin-right: 8px;
+}
+
+.axel-camera-light.ready {
+  background: #79e5df;
+}
+
+.axel-camera-light.waiting {
+  background: #efbe79;
+}
+
+.axel-camera-light.unavailable {
+  background: #ef7979;
+}
+
+.axel-face {
+  position: absolute;
+  left: 64px;
+  top: 48px;
+  width: 352px;
+  height: 264px;
+}
+
+.previewing .axel-face {
+  display: none;
+}
+
+.axel-face-compact {
+  display: none;
+  position: absolute;
+  left: 24px;
+  top: 48px;
+  width: 184px;
+  height: 264px;
+}
+
+.previewing .axel-face-compact {
+  display: block;
+}
+
+.axel-preview {
+  position: absolute;
+  left: 232px;
+  top: 100px;
+  width: 224px;
+}
+
+.axel-preview-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 296px;
+  top: 22px;
+  width: 160px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid #325052;
+  border-radius: 10px;
+  background: #071315;
+  color: #8fa9a7;
+  font-family: "Outfit M";
+  font-size: 14px;
+  text-align: center;
+}
+
+.axel-readout {
+  position: absolute;
+  left: 24px;
+  top: 324px;
+  width: 432px;
+  height: 68px;
+  overflow: hidden;
+}
+
+.axel-status {
+  width: 432px;
+  height: 24px;
+  font-family: "Outfit M";
+  font-size: 22px;
+  line-height: 24px;
+  text-align: center;
+  color: #e1f1ed;
+}
+
+.axel-status-error {
+  color: #efbe79;
+}
+
+.axel-message {
+  width: 432px;
+  height: 40px;
+  margin-top: 4px;
+  font-family: "Outfit M";
+  font-size: 15px;
+  line-height: 20px;
+  text-align: center;
+  color: #8fa9a7;
+}
+
+.axel-controls {
+  position: absolute;
+  left: 24px;
+  top: 404px;
+  width: 432px;
+  height: 52px;
+  display: flex;
+  flex-direction: row;
+}
+
+.axel-connect {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 248px;
+  height: 52px;
+  padding: 0;
+  border: 0;
+  border-radius: 13px;
+  background: #79e5df;
+  color: #071315;
+  font-family: "Outfit M";
+  font-size: 20px;
+  text-align: center;
+}
+
+.axel-connect-active {
+  background: #18383b;
+  color: #e1f1ed;
+}
+
+.axel-camera-control {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 172px;
+  height: 52px;
+  margin-left: 12px;
+  padding: 0;
+  border: 1px solid #325052;
+  border-radius: 13px;
+  background: #071315;
+  color: #8fa9a7;
+  font-family: "Outfit M";
+  font-size: 18px;
+  text-align: center;
+}
+
+.axel-camera-control-on {
+  border-color: #597d78;
+  color: #e1f1ed;
+}
+
+.axel-camera-button-label {
+  width: 112px;
+  font-family: "Outfit M";
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.axel-connect:disabled {
+  opacity: 0.5;
+}
+
+.axel-camera-control:disabled {
+  opacity: 0.5;
+}

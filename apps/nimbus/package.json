@@ -1,0 +1,43 @@
+{
+  "name": "@geastack/demo-nimbus",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "icons": "node ../../shared/scripts/build-icons.mjs"
+  },
+  "dependencies": {
+    "@demos/shared": "*",
+    "@geastack/core": "^0.1.41",
+    "@geastack/gea3d": "^0.1.1"
+  },
+  "gea": {
+    "id": "nimbus",
+    "name": "Nimbus",
+    "entry": "src/index.tsx",
+    "targets": {
+      "web": true,
+      "esp32": {
+        "componentRequires": [
+          "esp_driver_tsens"
+        ],
+        "linkOptions": [
+          "-Wl,-u,temperature_sensor_install",
+          "-Wl,-u,temperature_sensor_enable",
+          "-Wl,-u,temperature_sensor_get_celsius",
+          "-Wl,-u,temperature_sensor_uninstall"
+        ]
+      },
+      "stm32": true
+    },
+    "cssDevicePixelRatio": 1,
+    "nativeSources": [
+      "@demos/shared/native/sensors.cpp"
+    ],
+    "compilerPlugins": [
+      "native/plugin.mjs"
+    ]
+  },
+  "license": "GPL-3.0-only"
+}

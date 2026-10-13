@@ -1,0 +1,70 @@
+/*
+ * The reel is one full-panel canvas. Nothing here paints a background or
+ * clips (overflow counts as drawing), so the canvas is the only drawing node
+ * and presents straight to the display.
+ */
+
+.app {
+  width: 100%;
+  height: 100%;
+}
+
+.frame {
+  width: 100%;
+  height: 100%;
+}
+
+/*
+ * Font atlases for the caption cards (lib/captions.ts), drawn with
+ * ctx.fillText: the build bakes one per (family, size) pair found on a
+ * single-class rule. The charsets narrow each atlas to the text it shows.
+ */
+
+/* Hero and name sizes: small class (480x272) 48, large class 56 and down. */
+.font-hero {
+  font-family: "Outfit XL";
+  font-size: 72px;
+  --gea-font-charset: "GEASTCK";
+}
+
+.font-name-56 {
+  font-family: "Outfit XL";
+  font-size: 56px;
+  --gea-font-charset: ".AFKMRSTVabceilmnoprstuvxyz";
+}
+
+.font-name-48 {
+  font-family: "Outfit XL";
+  font-size: 48px;
+  --gea-font-charset: ".AFKMRSTVabceilmnoprstuvxyz";
+}
+
+.font-name-40 {
+  font-family: "Outfit XL";
+  font-size: 40px;
+  --gea-font-charset: ".AFKMRSTVabceilmnoprstuvxyz";
+}
+
+.font-dots-16 {
+  font-family: "Doto";
+  font-size: 16px;
+  --gea-font-charset: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789\B7 \D7 ";
+}
+
+.font-dots-20 {
+  font-family: "Doto";
+  font-size: 20px;
+  --gea-font-charset: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789\B7 \D7 ";
+}
+
+.font-caption-12 {
+  font-family: "Space Mono B";
+  font-size: 12px;
+  --gea-font-charset: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-./\B7 \B2 \D7 ";
+}
+
+.font-caption-14 {
+  font-family: "Space Mono B";
+  font-size: 14px;
+  --gea-font-charset: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-./\B7 \B2 \D7 ";
+}

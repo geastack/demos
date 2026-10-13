@@ -1,0 +1,67 @@
+/*
+ * Nimbus is one full-screen canvas; everything is painted into it
+ * (src/render). Nothing here draws: a drawing node over the canvas would
+ * force a compositing copy every frame.
+ */
+
+.app {
+  position: relative;
+  overflow: hidden;
+}
+
+.frame {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.touch {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+/*
+ * Font atlases for the canvas text: the build bakes one per (family, size)
+ * pair found on a single-class rule, and ctx.font picks them up by name.
+ * Display sizes carry only the glyphs they show.
+ */
+
+.font-hero {
+  font-family: "Outfit XL";
+  font-size: 80px;
+  --gea-font-charset: "0123456789-°";
+}
+
+.font-hero-l {
+  font-family: "Outfit XL";
+  font-size: 112px;
+  --gea-font-charset: "0123456789-°";
+}
+
+.font-numeral {
+  font-family: "Outfit L";
+  font-size: 40px;
+  --gea-font-charset: "0123456789.-°";
+}
+
+.font-wordmark {
+  font-family: "Outfit L";
+  font-size: 48px;
+  --gea-font-charset: "Nimbus";
+}
+
+.font-title {
+  font-family: "Outfit M";
+  font-size: 20px;
+}
+
+.font-body {
+  font-family: "Outfit M";
+  font-size: 14px;
+}
+
+.font-caption {
+  font-family: "Outfit M";
+  font-size: 12px;
+}

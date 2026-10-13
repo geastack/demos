@@ -1,0 +1,228 @@
+/* The cover flow: the centred cover rests on layout.ts's FLOW_CX / FLOW_CY
+   (landscape: 144 px on 240, 114); slots are placed and sized by the flow
+   store in screen coordinates. */
+
+.browse-halo {
+  position: absolute;
+  width: 320px;
+  height: 320px;
+}
+
+.browse-head {
+  position: absolute;
+}
+
+.stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.slot {
+  position: absolute;
+}
+
+.slot-veil {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  background-color: #000000;
+}
+
+/* From the Now Playing art (landscape: 192 px centred on 120, 136; stacked
+   layouts just pop it in). */
+.slot-landing {
+  animation: landing 460ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.slot-landing-here {
+  animation: pop-in 320ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes pop-in {
+  from {
+    transform: scale(0.94);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes landing {
+  from {
+    transform: translate(-120px, 22px) scale(1.3333);
+  }
+
+  to {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+/* The neighbours fan out from behind the centred cover. */
+.slot-in-0 {
+  animation: fan-left-far 520ms cubic-bezier(0.2, 0.8, 0.2, 1) 120ms both;
+}
+
+.slot-in-1 {
+  animation: fan-left 480ms cubic-bezier(0.2, 0.8, 0.2, 1) 80ms both;
+}
+
+.slot-in-3 {
+  animation: fan-right 480ms cubic-bezier(0.2, 0.8, 0.2, 1) 80ms both;
+}
+
+.slot-in-4 {
+  animation: fan-right-far 520ms cubic-bezier(0.2, 0.8, 0.2, 1) 120ms both;
+}
+
+@keyframes fan-left-far {
+  from {
+    transform: translate(180px, 0px);
+  }
+
+  to {
+    transform: translate(0px, 0px);
+  }
+}
+
+@keyframes fan-left {
+  from {
+    transform: translate(96px, 0px);
+  }
+
+  to {
+    transform: translate(0px, 0px);
+  }
+}
+
+@keyframes fan-right {
+  from {
+    transform: translate(-96px, 0px);
+  }
+
+  to {
+    transform: translate(0px, 0px);
+  }
+}
+
+@keyframes fan-right-far {
+  from {
+    transform: translate(-180px, 0px);
+  }
+
+  to {
+    transform: translate(0px, 0px);
+  }
+}
+
+/* ---- Badges on the resting centre cover (168..312, 42..186) ---- */
+
+.badges {
+  position: absolute;
+}
+
+.playing-badge {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  height: 24px;
+  border-radius: 12px;
+  padding: 0 8px;
+  background-color: rgba(0, 0, 0, 0.56);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  animation: fade-in 240ms ease-out both;
+}
+
+.play-badge {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pop 360ms cubic-bezier(0.2, 0.8, 0.2, 1.4) both;
+}
+
+/* ---- Copy and dots ---- */
+
+.browse-copy {
+  position: absolute;
+  left: 0;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.copy-a {
+  animation: copy-a 300ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.copy-b {
+  animation: copy-b 300ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes copy-a {
+  from {
+    opacity: 0;
+    transform: translate(0px, 6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(0px, 0px);
+  }
+}
+
+@keyframes copy-b {
+  from {
+    opacity: 0;
+    transform: translate(0px, 6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(0px, 0px);
+  }
+}
+
+.dots {
+  position: absolute;
+  left: 0;
+  height: 6px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 6px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: var(--glass-2);
+}
+
+.dot-on {
+  width: 18px;
+}
+
+.browse-touch {
+  position: absolute;
+  left: 0;
+}

@@ -1,0 +1,396 @@
+/*
+ * Neon Drift: night violet, magenta accent, cyan and sun as scene colours.
+ * Every colour sits on the RGB565 grid (R and B multiples of 8, G of 4).
+ * The root has no background: gea3d draws the scene underneath and these
+ * overlays composite on top.
+ */
+
+.app {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  --text: #f8f0f8;
+  --magenta: #f82c88;
+  --cyan: #18d0f8;
+}
+
+.layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.centre {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---- Typography: each family + size pair on one single-class rule ---- */
+
+.caption {
+  font-family: "Barlow SC M";
+  font-size: 12px;
+  white-space: nowrap;
+  color: var(--text);
+  opacity: 0.64;
+}
+
+.body {
+  font-family: "Barlow SC M";
+  font-size: 14px;
+  white-space: nowrap;
+  color: var(--text);
+}
+
+.body-l {
+  font-family: "Barlow SC M";
+  font-size: 16px;
+  white-space: nowrap;
+  color: var(--text);
+}
+
+.wordmark {
+  font-family: "Barlow SC B";
+  font-size: 48px;
+  white-space: nowrap;
+  color: var(--text);
+}
+
+.wordmark-l {
+  font-family: "Barlow SC B";
+  font-size: 72px;
+  white-space: nowrap;
+  color: var(--text);
+}
+
+.score-l {
+  font-family: "Space Mono B";
+  font-size: 28px;
+  white-space: nowrap;
+  color: var(--text);
+}
+
+.bonus-l {
+  font-family: "Space Mono B";
+  font-size: 16px;
+  white-space: nowrap;
+  color: var(--cyan);
+}
+
+.final-l {
+  font-family: "Space Mono B";
+  font-size: 72px;
+  white-space: nowrap;
+  color: var(--text);
+}
+
+.score {
+  font-family: "Space Mono B";
+  font-size: 24px;
+  white-space: nowrap;
+  color: var(--text);
+}
+
+.bonus {
+  font-family: "Space Mono B";
+  font-size: 14px;
+  white-space: nowrap;
+  color: var(--cyan);
+}
+
+.final {
+  font-family: "Space Mono B";
+  font-size: 56px;
+  white-space: nowrap;
+  color: var(--text);
+}
+
+.accent {
+  color: var(--magenta);
+  opacity: 1;
+}
+
+/* ---- Title (attract mode) ---- */
+
+.title {
+  animation: title-in 600ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.tagline {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+}
+
+.word {
+  position: absolute;
+  left: 16px;
+}
+
+.word-top {
+  top: 30px;
+}
+
+.word-bottom {
+  top: 72px;
+}
+
+.prompt {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  animation: pulse 1400ms ease-in-out infinite alternate;
+}
+
+.tagline-l {
+  position: absolute;
+  left: 32px;
+  top: 40px;
+}
+
+.word-top-l {
+  top: 60px;
+  left: 32px;
+}
+
+.word-bottom-l {
+  top: 130px;
+  left: 32px;
+}
+
+.prompt-l {
+  position: absolute;
+  left: 32px;
+  bottom: 40px;
+  animation: pulse 1400ms ease-in-out infinite alternate;
+}
+
+.best-corner-l {
+  position: absolute;
+  right: 32px;
+  bottom: 40px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.best-corner {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ---- Run HUD ---- */
+
+.hud-block {
+  position: absolute;
+  top: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.hud-left {
+  left: 16px;
+  align-items: flex-start;
+}
+
+.hud-right {
+  right: 16px;
+  align-items: flex-end;
+}
+
+.hud-left-l {
+  left: 32px;
+  top: 32px;
+  align-items: flex-start;
+}
+
+.hud-right-l {
+  right: 32px;
+  top: 32px;
+  align-items: flex-end;
+}
+
+.pop-l {
+  position: absolute;
+  left: 32px;
+  top: 92px;
+  animation: pop 800ms ease-out both;
+}
+
+.pop {
+  position: absolute;
+  left: 16px;
+  top: 58px;
+  animation: pop 800ms ease-out both;
+}
+
+/* ---- Game over ---- */
+
+.flash {
+  background-color: #f8d0e8;
+  animation: flash 420ms ease-out both;
+}
+
+.stack {
+  position: relative;
+  width: 240px;
+  height: 160px;
+}
+
+.stack-l {
+  position: relative;
+  width: 280px;
+  height: 200px;
+}
+
+.card-glow {
+  position: absolute;
+  left: -4px;
+  top: -4px;
+  width: 246px;
+  height: 166px;
+  border: 1px solid var(--magenta);
+  opacity: 0.24;
+  animation: card-glow-in 1000ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.card-glow-l {
+  position: absolute;
+  left: -4px;
+  top: -4px;
+  width: 286px;
+  height: 206px;
+  border: 1px solid var(--magenta);
+  opacity: 0.24;
+  animation: card-glow-in 1000ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 240px;
+  height: 160px;
+  border: 1px solid var(--magenta);
+  background-color: #0c0628;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  animation: card-in 1000ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.card-l {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 280px;
+  height: 200px;
+  border: 1px solid var(--magenta);
+  background-color: #0c0628;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  animation: card-in 1000ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.badge {
+  padding: 2px 6px;
+  background-color: var(--magenta);
+  color: #080420;
+  opacity: 1;
+}
+
+.retry {
+  margin-top: 8px;
+  animation: pulse 1400ms ease-in-out infinite alternate;
+}
+
+/* ---- Motion ---- */
+
+@keyframes title-in {
+  from {
+    opacity: 0;
+    transform: translate(0, 8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes pulse {
+  from {
+    opacity: 0.4;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translate(0, -12px);
+  }
+}
+
+@keyframes flash {
+  from {
+    opacity: 0.56;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+/* The crash plays out first; the card lands after it. */
+@keyframes card-in {
+  0% {
+    opacity: 0;
+    transform: translate(0, 12px) scale(0.96);
+  }
+
+  60% {
+    opacity: 0;
+    transform: translate(0, 12px) scale(0.96);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+@keyframes card-glow-in {
+  0% {
+    opacity: 0;
+  }
+
+  70% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0.24;
+  }
+}

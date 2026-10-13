@@ -1,0 +1,56 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.14/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "includes": ["apps/*/src/**", "apps/*/package.json", "shared/**", "!shared/gea3d/**", "scripts/**", "package.json"]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 120
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double"
+    }
+  },
+  "css": {
+    "parser": {
+      "cssModules": true
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "correctness": {
+        "noUnusedImports": "error",
+        "noUnusedVariables": "error"
+      },
+      "style": {
+        "noNonNullAssertion": "off"
+      },
+      // Touch-first board app with embedded TTF fonts and no screen reader: keyboard handlers, generic font
+      // fallbacks and image alt text do not apply.
+      "a11y": {
+        "noStaticElementInteractions": "off",
+        "useAltText": "off",
+        "useKeyWithClickEvents": "off",
+        "useGenericFontNames": "off"
+      }
+    }
+  },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  }
+}
