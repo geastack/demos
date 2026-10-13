@@ -1,0 +1,256 @@
+/* The poster shifts up: the part worth seeing shows in the band above the
+   sheet (one rule per shape: keyframe distances are fixed pixels). */
+.band {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.band-l {
+  animation: band-up-l 440ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.band-s {
+  animation: band-up-s 440ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.band-p {
+  animation: band-up-p 440ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* Taller than the space below its top, so its lower corners sit off screen
+   (position and size come from layout.ts). */
+.sheet {
+  position: absolute;
+  left: 0;
+  border-radius: 20px;
+  background-color: var(--cream);
+  animation: sheet-up 440ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* The sheet's content, below its handle. */
+.body {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.handle {
+  position: absolute;
+  top: 8px;
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background-color: var(--handle);
+}
+
+/* ---- Left column: 216 px ---- */
+
+.title-row {
+  position: absolute;
+  left: 16px;
+  top: 12px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.country {
+  margin-bottom: 4px;
+  color: var(--ink-3);
+}
+
+.story {
+  position: absolute;
+  left: 16px;
+  top: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.facts {
+  position: absolute;
+  left: 16px;
+  top: 94px;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.fact {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+}
+
+.c-soft {
+  color: var(--ink-2);
+}
+
+.action {
+  position: absolute;
+  left: 16px;
+  top: 124px;
+  height: 40px;
+}
+
+.button {
+  height: 40px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.button:active {
+  transform: scale(0.96);
+}
+
+.button-saved {
+  background-color: var(--ink);
+}
+
+.saved-check {
+  width: 16px;
+  height: 16px;
+  animation: pop 380ms cubic-bezier(0.2, 0.8, 0.2, 1.4) both;
+}
+
+.saved-label {
+  animation: rise 320ms cubic-bezier(0.2, 0.8, 0.2, 1) 60ms both;
+}
+
+/* ---- Right column: two 104 px cards ---- */
+
+.card {
+  position: absolute;
+  top: 16px;
+  width: 104px;
+  height: 144px;
+  border-radius: 12px;
+  border: 1px solid var(--card-edge);
+  background-color: var(--card);
+  display: flex;
+  flex-direction: column;
+  padding: 7px;
+}
+
+.card-first {
+  left: 248px;
+  animation: lift 460ms cubic-bezier(0.2, 0.8, 0.2, 1) 200ms both;
+}
+
+.card-second {
+  left: 360px;
+  animation: lift 460ms cubic-bezier(0.2, 0.8, 0.2, 1) 240ms both;
+}
+
+.card-label {
+  margin-top: 8px;
+}
+
+/* Portrait: the cards are full-width rows, the thumb at the left. */
+.card-row {
+  position: absolute;
+  left: 16px;
+  height: 96px;
+  border-radius: 12px;
+  border: 1px solid var(--card-edge);
+  background-color: var(--card);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 3px 3px 3px 3px;
+  animation: lift 460ms cubic-bezier(0.2, 0.8, 0.2, 1) 200ms both;
+}
+
+.card-row-second {
+  animation: lift 460ms cubic-bezier(0.2, 0.8, 0.2, 1) 240ms both;
+}
+
+.card-text {
+  margin-left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ---- Staggered entrances inside the rising sheet ---- */
+
+.enter-1 {
+  animation: rise 420ms cubic-bezier(0.2, 0.8, 0.2, 1) 180ms both;
+}
+
+.enter-2 {
+  animation: rise 420ms cubic-bezier(0.2, 0.8, 0.2, 1) 220ms both;
+}
+
+.enter-3 {
+  animation: lift 420ms cubic-bezier(0.2, 0.8, 0.2, 1) 260ms both;
+}
+
+.enter-4 {
+  animation: lift 420ms cubic-bezier(0.2, 0.8, 0.2, 1) 300ms both;
+}
+
+.back {
+  position: absolute;
+  left: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  border: 1px solid var(--dot);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pop 380ms cubic-bezier(0.2, 0.8, 0.2, 1) 260ms both;
+}
+
+.back:active {
+  transform: scale(0.92);
+}
+
+@keyframes band-up-l {
+  from {
+    transform: translate(0px, 0px);
+  }
+
+  to {
+    transform: translate(0px, -64px);
+  }
+}
+
+@keyframes band-up-s {
+  from {
+    transform: translate(0px, 0px);
+  }
+
+  to {
+    transform: translate(0px, -208px);
+  }
+}
+
+@keyframes band-up-p {
+  from {
+    transform: translate(0px, 0px);
+  }
+
+  to {
+    transform: translate(0px, -290px);
+  }
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translate(0%, 100%);
+  }
+
+  to {
+    transform: translate(0px, 0px);
+  }
+}

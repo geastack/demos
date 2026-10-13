@@ -1,0 +1,186 @@
+/* The strip: two poster slots, translated side by side by the carousel. */
+.stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+/* Back from Detail: the poster drops from its band pose onto the paper (one
+   rule per shape: keyframe distances are fixed pixels). */
+.stage-return-l {
+  animation: poster-drop-l 440ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.stage-return-s {
+  animation: poster-drop-s 440ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.stage-return-p {
+  animation: poster-drop-p 440ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.slot {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+/* ---- Copy in the sky ---- */
+
+.copy {
+  position: absolute;
+  left: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.copy-title {
+  animation: rise 400ms cubic-bezier(0.2, 0.8, 0.2, 1) 40ms both;
+}
+
+.copy-tagline {
+  margin-top: -2px;
+  animation: rise 400ms cubic-bezier(0.2, 0.8, 0.2, 1) 100ms both;
+}
+
+/* ---- Pills: opaque dark glass with a lighter rim ---- */
+
+.pill {
+  position: absolute;
+  height: 28px;
+  border-radius: 14px;
+  border: 1px solid var(--dot);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+
+.saved {
+  right: 16px;
+  padding: 0 12px 0 10px;
+  animation: pop 360ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.chips {
+  position: absolute;
+  left: 16px;
+  height: 28px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.chip {
+  position: relative;
+  padding: 0 12px 0 10px;
+}
+
+.chip-1 {
+  animation: chip-in 400ms cubic-bezier(0.2, 0.8, 0.2, 1) 80ms both;
+}
+
+.chip-2 {
+  animation: chip-in 400ms cubic-bezier(0.2, 0.8, 0.2, 1) 120ms both;
+}
+
+.chip-3 {
+  animation: chip-in 400ms cubic-bezier(0.2, 0.8, 0.2, 1) 160ms both;
+}
+
+/* ---- Page dots ---- */
+
+.dots {
+  right: 16px;
+  padding: 0 11px;
+}
+
+/* Narrow panels: a centred row of its own under the chips. */
+.dots-row {
+  position: absolute;
+  left: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.dots-centred {
+  position: relative;
+  padding: 0 11px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: var(--dot);
+}
+
+.dot-on {
+  width: 24px;
+}
+
+.dot-fill {
+  width: 24px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: var(--cream);
+  transform-origin: 0% 50%;
+  animation: countdown 7000ms linear both;
+}
+
+.touch {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+@keyframes poster-drop-l {
+  from {
+    transform: translate(0px, -64px);
+  }
+
+  to {
+    transform: translate(0px, 0px);
+  }
+}
+
+@keyframes poster-drop-s {
+  from {
+    transform: translate(0px, -208px);
+  }
+
+  to {
+    transform: translate(0px, 0px);
+  }
+}
+
+@keyframes poster-drop-p {
+  from {
+    transform: translate(0px, -290px);
+  }
+
+  to {
+    transform: translate(0px, 0px);
+  }
+}
+
+@keyframes chip-in {
+  from {
+    transform: translate(0px, 48px);
+  }
+
+  to {
+    transform: translate(0px, 0px);
+  }
+}
+
+@keyframes countdown {
+  from {
+    transform: scale(0.25, 1);
+  }
+
+  to {
+    transform: scale(1, 1);
+  }
+}

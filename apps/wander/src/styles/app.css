@@ -1,0 +1,158 @@
+/*
+ * Wander: gouache travel posters on warm cream paper, ink type. Every colour
+ * sits on the RGB565 grid (R and B multiples of 8, G of 4). Custom properties
+ * live on the app root (not :root). The cream root shows through wherever a
+ * hero slides away, so screen changes read as paper under the posters.
+ */
+
+.app {
+  position: relative;
+  overflow: hidden;
+  background-color: #f8ece0;
+  --cream: #f8ece0;
+  --ink: #201c18;
+  --ink-2: #706460;
+  --ink-3: #a09890;
+  --card: #fffcf8;
+  --card-edge: #e8dcc8;
+  --handle: #e0d0c0;
+  --dot: #989488;
+}
+
+.screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* The panel-sized window onto a 480x502 poster image (see layout.ts). */
+.hero-art {
+  position: relative;
+  overflow: hidden;
+}
+
+.art {
+  position: absolute;
+}
+
+.thumb-art {
+  width: 88px;
+  height: 88px;
+}
+
+/* ---- Typography ----
+ * The font atlas bakes each family-and-size pair it finds on a single-class
+ * rule, so every size is declared with its family here. Display sizes carry
+ * only the glyphs they show. Colour modifiers (.c-*) come after so they win.
+ */
+
+.t-wordmark {
+  font-family: "Fraunces SB";
+  font-size: 56px;
+  --gea-font-charset: "Wander";
+  white-space: nowrap;
+  color: var(--ink);
+}
+
+.t-hero {
+  font-family: "Fraunces SB";
+  font-size: 44px;
+  --gea-font-charset: "KSIMPyotanricelkhdg";
+  white-space: nowrap;
+}
+
+.t-hero-l {
+  font-family: "Fraunces SB";
+  font-size: 56px;
+  --gea-font-charset: "KSIMPyotanricelkhdg";
+  white-space: nowrap;
+}
+
+.t-title {
+  font-family: "Fraunces SB";
+  font-size: 24px;
+  white-space: nowrap;
+  color: var(--ink);
+}
+
+.t-body {
+  font-family: "Manrope M";
+  font-size: 14px;
+  white-space: nowrap;
+  color: var(--ink-2);
+}
+
+.t-button {
+  font-family: "Manrope B";
+  font-size: 14px;
+  white-space: nowrap;
+  color: var(--cream);
+}
+
+.t-caption {
+  font-family: "Manrope M";
+  font-size: 12px;
+  white-space: nowrap;
+  color: var(--ink);
+}
+
+.t-label {
+  font-family: "Manrope B";
+  font-size: 12px;
+  white-space: nowrap;
+  color: var(--ink-3);
+}
+
+.c-light {
+  color: var(--cream);
+}
+
+.c-ink {
+  color: var(--ink);
+}
+
+.c-white {
+  color: #ffffff;
+}
+
+/* ---- Motion ----
+ * Keyframes run when an element mounts; `both` holds the start pose through a
+ * stagger delay and the end pose after. Decelerate in. Opacity only ever
+ * animates text; anything holding an <img> moves by transform alone.
+ */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translate(0px, 12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(0px, 0px);
+  }
+}
+
+@keyframes lift {
+  from {
+    transform: translate(0px, 24px);
+  }
+
+  to {
+    transform: translate(0px, 0px);
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.4);
+  }
+
+  70% {
+    transform: scale(1.08);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}

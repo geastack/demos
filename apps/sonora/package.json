@@ -1,0 +1,28 @@
+{
+  "name": "@geastack/demo-sonora",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "icons": "node ../../shared/scripts/build-icons.mjs",
+    "art": "node scripts/build-art.mjs"
+  },
+  "dependencies": {
+    "@demos/shared": "*",
+    "@geastack/core": "^0.1.41",
+    "@geastack/gea3d": "^0.1.1"
+  },
+  "gea": {
+    "id": "sonora",
+    "name": "Sonora",
+    "entry": "src/index.tsx",
+    "targets": {
+      "web": true,
+      "esp32": true,
+      "stm32": true
+    },
+    "cssDevicePixelRatio": 1
+  },
+  "license": "GPL-3.0-only"
+}

@@ -1,0 +1,40 @@
+{
+  "name": "@geastack/demo-terra",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "icons": "node ../../shared/scripts/build-icons.mjs"
+  },
+  "dependencies": {
+    "@demos/shared": "*",
+    "@geastack/core": "^0.1.41",
+    "@geastack/gea3d": "^0.1.1"
+  },
+  "gea": {
+    "id": "terra",
+    "name": "Terra",
+    "entry": "src/index.tsx",
+    "targets": {
+      "web": true,
+      "esp32": true,
+      "stm32": true
+    },
+    "cssDevicePixelRatio": 1,
+    "nativeSources": [
+      "@demos/shared/native/web_gpio.cpp",
+      "@demos/shared/native/surface.cpp",
+      "native/terra.cpp",
+      "native/voxel.cpp",
+      "native/bake.cpp",
+      "native/noise.cpp",
+      "native/landscapes.cpp",
+      "native/chrome.cpp"
+    ],
+    "compilerPlugins": [
+      "native/plugin.mjs"
+    ]
+  },
+  "license": "GPL-3.0-only"
+}

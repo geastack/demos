@@ -1,0 +1,45 @@
+{
+  "name": "@geastack/demo-axel",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A camera-aware voice companion with a dot matrix face for ESP-Mosaico",
+  "scripts": {
+    "build": "gea build --board mosaico --app axel",
+    "flash": "gea flash --board mosaico --app axel",
+    "check": "tsc --noEmit --noUnusedLocals --noUnusedParameters",
+    "test": "node --test test/conversation.test.ts && node --test test/realtime-session.test.ts"
+  },
+  "dependencies": {
+    "@demos/shared": "*",
+    "@geastack/core": "^0.1.41",
+    "@geastack/gea3d": "^0.1.1"
+  },
+  "gea": {
+    "id": "axel",
+    "name": "Axel",
+    "entry": "src/main.tsx",
+    "runtime": "gea",
+    "cssDevicePixelRatio": 1,
+    "targets": {
+      "esp32": {
+        "sdkconfig": "sdkconfig.defaults"
+      },
+      "web": false
+    },
+    "defines": [
+      "GEA_AUDIO_FULL_DUPLEX=1",
+      "GEA_AUDIO_ECHO_CANCELLATION=1",
+      "GEA_EMBEDDED_DISPLAY_ROTATE_LANDSCAPE=1",
+      "GEA_EMBEDDED_TEXT_SPRITE_HOT_STAGE_BYTES=0",
+      "GEA_EMBEDDED_WIFI_STATIC_TX_BUFFERS=8",
+      "GEA_EMBEDDED_WIFI_CACHE_TX_BUFFERS=16",
+      "GEA_EMBEDDED_WIFI_STATIC_RX_BUFFERS=8",
+      "GEA_EMBEDDED_WIFI_DYNAMIC_RX_BUFFERS=32"
+    ]
+  },
+  "engines": {
+    "node": "^22.18.0 || >=24"
+  },
+  "license": "GPL-3.0-only"
+}

@@ -1,0 +1,273 @@
+/*
+ * The Aviator: warm sky, brown type, the plane's red as the one accent.
+ * Every colour sits on the RGB565 grid (R and B multiples of 8, G of 4).
+ * The root has no background: gea3d draws the scene underneath and these
+ * overlays composite on top.
+ */
+
+.app {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  --text: #583430;
+  --red: #f05448;
+  --blue: #68c4c0;
+  --track: #e0c498;
+}
+
+.layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---- Typography: each family + size pair on one single-class rule ---- */
+
+.caption {
+  font-family: "Hanken SB";
+  font-size: 12px;
+  white-space: nowrap;
+  color: var(--text);
+  opacity: 0.64;
+}
+
+.body {
+  font-family: "Hanken SB";
+  font-size: 14px;
+  white-space: nowrap;
+  color: var(--text);
+}
+
+.value {
+  font-family: "Fraunces SB";
+  font-size: 24px;
+  white-space: nowrap;
+  color: var(--text);
+}
+
+.wordmark {
+  font-family: "Fraunces SB";
+  font-size: 48px;
+  white-space: nowrap;
+  color: var(--text);
+}
+
+.hero {
+  font-family: "Fraunces SB";
+  font-size: 48px;
+  white-space: nowrap;
+  color: var(--red);
+}
+
+/* Large tier (shorter side >= 400): the same roles, bigger. */
+
+.caption-l {
+  font-family: "Hanken SB";
+  font-size: 16px;
+  white-space: nowrap;
+  color: var(--text);
+  opacity: 0.64;
+}
+
+.body-l {
+  font-family: "Hanken SB";
+  font-size: 20px;
+  white-space: nowrap;
+  color: var(--text);
+}
+
+.value-l {
+  font-family: "Fraunces SB";
+  font-size: 32px;
+  white-space: nowrap;
+  color: var(--text);
+}
+
+.wordmark-l {
+  font-family: "Fraunces SB";
+  font-size: 56px;
+  white-space: nowrap;
+  color: var(--text);
+}
+
+.hero-l {
+  font-family: "Fraunces SB";
+  font-size: 72px;
+  white-space: nowrap;
+  color: var(--red);
+}
+
+/* ---- Title (attract mode) ---- */
+
+.title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: title-in 700ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.title {
+  padding-top: 12px;
+}
+
+.tagline {
+  color: var(--red);
+}
+
+.prompt {
+  position: absolute;
+  left: 0;
+  bottom: 16px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.pulse {
+  animation: pulse 1400ms ease-in-out infinite alternate;
+}
+
+.best-corner {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ---- Flight HUD ---- */
+
+.stat {
+  position: absolute;
+  top: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-left {
+  left: 16px;
+  align-items: flex-start;
+}
+
+.stat-center {
+  left: 0;
+  width: 100%;
+  align-items: center;
+}
+
+.stat-right {
+  right: 16px;
+  align-items: flex-end;
+}
+
+.track {
+  background-color: var(--track);
+}
+
+.level-track {
+  width: 64px;
+  height: 4px;
+  margin-top: 2px;
+}
+
+.energy-track {
+  width: 100px;
+  height: 8px;
+  margin-top: 6px;
+}
+
+.fill {
+  height: 100%;
+}
+
+.level-fill {
+  background-color: var(--text);
+}
+
+.energy-fill {
+  background-color: var(--blue);
+}
+
+.energy-low {
+  background-color: var(--red);
+  animation: blink 500ms ease-in-out infinite alternate;
+}
+
+/* ---- Game over ---- */
+
+.over {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 15%;
+  animation: over-in 600ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.over-row {
+  display: flex;
+  gap: 16px;
+}
+
+.badge {
+  padding: 2px 6px;
+  background-color: var(--red);
+  color: #f8f0e8;
+  opacity: 1;
+}
+
+.prompt-over {
+  margin-top: 16px;
+  animation: pulse 1400ms ease-in-out infinite alternate;
+}
+
+/* ---- Motion ---- */
+
+@keyframes title-in {
+  from {
+    opacity: 0;
+    transform: translate(0, -8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes over-in {
+  from {
+    opacity: 0;
+    transform: translate(0, 12px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+@keyframes pulse {
+  from {
+    opacity: 0.4;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes blink {
+  from {
+    opacity: 0.3;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

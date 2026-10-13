@@ -1,0 +1,15 @@
+/*
+ * The intro is one full-panel canvas. Nothing here paints a background or
+ * clips (overflow counts as drawing), so the canvas is the only drawing node
+ * and presents straight to the display. It fills whatever panel the app runs on.
+ */
+
+.app {
+  width: 100%;
+  height: 100%;
+}
+
+.frame {
+  width: 100%;
+  height: 100%;
+}

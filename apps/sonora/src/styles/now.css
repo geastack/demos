@@ -1,0 +1,432 @@
+/* Now Playing. Landscape (480x272): the 192 px art at the left, a 208 px
+   column at x 248 on the right. Square and portrait stack them: art, title,
+   equaliser, scrubber, transport. Positions and widths come from layout.ts
+   (inline); this file holds the look. */
+
+/* An ellipse that ends at the column's edge (x 248), so the equaliser's
+   flat canvas never sits on the glow. */
+.halo {
+  position: absolute;
+}
+
+.art-place {
+  position: absolute;
+  width: 192px;
+  height: 192px;
+}
+
+.art {
+  width: 192px;
+  height: 192px;
+}
+
+/* ---- The art's entrances: from the cover flow's centre (144 px at 240, 114),
+   from the queue's card (144 px at 88, 136), or a drop from the boot. ---- */
+
+.art-from-browse {
+  animation: from-browse 460ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.art-from-queue {
+  animation: from-queue 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.art-drop {
+  animation: drop 560ms cubic-bezier(0.2, 0.8, 0.3, 1.15) both;
+}
+
+@keyframes from-browse {
+  from {
+    transform: translate(120px, -22px) scale(0.75);
+  }
+
+  to {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+@keyframes from-queue {
+  from {
+    transform: translate(-32px, 0px) scale(0.75);
+  }
+
+  to {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+@keyframes drop {
+  from {
+    transform: translate(0px, 24px) scale(0.86);
+  }
+
+  to {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+/* A new album: the art gives a small bounce. */
+.swap-a {
+  animation: swap-a 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.swap-b {
+  animation: swap-b 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes swap-a {
+  0% {
+    transform: scale(0.9);
+  }
+
+  60% {
+    transform: scale(1.02);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes swap-b {
+  0% {
+    transform: scale(0.9);
+  }
+
+  60% {
+    transform: scale(1.02);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ---- Top row: the room chip, the sleep timer and the library ---- */
+
+.top-row {
+  position: absolute;
+  height: 32px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chip {
+  height: 30px;
+  border-radius: 16px;
+  padding: 0 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
+.chip:active {
+  background-color: var(--glass-2);
+}
+
+.chip-caret {
+  opacity: 0.64;
+}
+
+.top-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.pill-button {
+  height: 30px;
+  min-width: 30px;
+  border-radius: 16px;
+  padding: 0 7px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.pill-button:active {
+  background-color: var(--glass-2);
+  transform: scale(0.92);
+}
+
+.chip-big {
+  height: 40px;
+  border-radius: 20px;
+  padding: 0 14px;
+}
+
+.pill-big {
+  height: 40px;
+  min-width: 40px;
+  border-radius: 20px;
+}
+
+.pill-timer {
+  border: 1px solid;
+  background-color: var(--glass);
+}
+
+/* ---- Title and artist: a track change slides them in from its side ---- */
+
+.meta {
+  position: absolute;
+  height: 52px;
+}
+
+.meta-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.meta-center {
+  align-items: center;
+}
+
+.next-a {
+  animation: next-a 360ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.next-b {
+  animation: next-b 360ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.prev-a {
+  animation: prev-a 360ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.prev-b {
+  animation: prev-b 360ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes next-a {
+  from {
+    opacity: 0;
+    transform: translate(20px, 0px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(0px, 0px);
+  }
+}
+
+@keyframes next-b {
+  from {
+    opacity: 0;
+    transform: translate(20px, 0px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(0px, 0px);
+  }
+}
+
+@keyframes prev-a {
+  from {
+    opacity: 0;
+    transform: translate(-20px, 0px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(0px, 0px);
+  }
+}
+
+@keyframes prev-b {
+  from {
+    opacity: 0;
+    transform: translate(-20px, 0px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(0px, 0px);
+  }
+}
+
+/* ---- Equaliser ---- */
+
+.spectrum {
+  position: absolute;
+  height: 36px;
+}
+
+/* ---- Scrubber: a 4 px track; the touch strip above it is 40 px tall ---- */
+
+.scrubber {
+  position: absolute;
+  height: 32px;
+}
+
+.track {
+  position: absolute;
+  left: 0;
+  top: 6px;
+  height: 4px;
+  border-radius: 2px;
+  background-color: var(--glass-2);
+}
+
+.track-fill {
+  position: absolute;
+  left: 0;
+  top: 6px;
+  height: 4px;
+  border-radius: 2px;
+}
+
+.knob-place {
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 12px;
+  height: 12px;
+}
+
+.knob {
+  width: 12px;
+  height: 12px;
+  border-radius: 6px;
+  background-color: var(--text);
+}
+
+.knob-held {
+  transform: scale(1.5);
+}
+
+.times {
+  position: absolute;
+  left: 0;
+  top: 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.scrub-touch {
+  position: absolute;
+  left: -8px;
+  top: -12px;
+  height: 40px;
+}
+
+/* ---- Transport ---- */
+
+.controls {
+  position: absolute;
+  height: 52px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.control {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.control:active {
+  background-color: var(--glass-2);
+  transform: scale(0.88);
+}
+
+.play {
+  position: relative;
+  width: 52px;
+  height: 52px;
+}
+
+.play-disc {
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.play-disc:active {
+  transform: scale(0.88);
+}
+
+/* The triangle's weight sits left of its box; nudge it to look centred. */
+.play-icon {
+  margin-left: 3px;
+}
+
+.icon-pop {
+  animation: pop 280ms cubic-bezier(0.2, 0.8, 0.2, 1.3) both;
+}
+
+/* A ring bursts out of the button on every press. */
+.burst {
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 44px;
+  height: 44px;
+  border-radius: 24px;
+  border: 2px solid;
+  opacity: 0;
+}
+
+.burst-a {
+  animation: burst-a 560ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.burst-b {
+  animation: burst-b 560ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes burst-a {
+  from {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+@keyframes burst-b {
+  from {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+/* ---- Toast over the art's foot ---- */
+
+.toast {
+  position: absolute;
+  width: 176px;
+  height: 28px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: rise 320ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}

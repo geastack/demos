@@ -1,0 +1,30 @@
+{
+  "icons": [
+    { "name": "back", "glyph": "caret-left", "weight": "bold", "size": 20, "color": "#f8f0e8" },
+    { "name": "close", "glyph": "x", "weight": "bold", "size": 18, "color": "#f8f0e8" },
+    { "name": "manual", "glyph": "sliders-horizontal", "weight": "bold", "size": 16, "color": "#f8f0e8" },
+    { "name": "clock", "glyph": "clock", "weight": "regular", "size": 16, "color": "#b8aca0" },
+    { "name": "thermo", "glyph": "thermometer-simple", "weight": "regular", "size": 16, "color": "#b8aca0" },
+    { "name": "timer", "glyph": "timer", "weight": "regular", "size": 16, "color": "#b8aca0" },
+    { "name": "bake", "glyph": "oven", "weight": "regular", "size": 20, "color": "#b8aca0" },
+    { "name": "bake-on", "glyph": "oven", "weight": "bold", "size": 20, "color": "#201008" },
+    { "name": "convection", "glyph": "fan", "weight": "regular", "size": 20, "color": "#b8aca0" },
+    { "name": "convection-on", "glyph": "fan", "weight": "bold", "size": 20, "color": "#201008" },
+    { "name": "grill", "glyph": "flame", "weight": "regular", "size": 20, "color": "#b8aca0" },
+    { "name": "grill-on", "glyph": "flame", "weight": "bold", "size": 20, "color": "#201008" },
+    { "name": "airfry", "glyph": "wind", "weight": "regular", "size": 20, "color": "#b8aca0" },
+    { "name": "airfry-on", "glyph": "wind", "weight": "bold", "size": 20, "color": "#201008" },
+    { "name": "demo", "glyph": "lightning", "weight": "fill", "size": 14, "color": "#f8a840" },
+    { "name": "demo-off", "glyph": "lightning", "weight": "fill", "size": 14, "color": "#807468" },
+    { "name": "check", "glyph": "check", "weight": "bold", "size": 36, "color": "#201008" },
+    { "name": "check-small", "glyph": "check", "weight": "bold", "size": 12, "color": "#201008" },
+    { "name": "flip", "glyph": "arrows-clockwise", "weight": "bold", "size": 40, "color": "#f8a840" },
+    { "name": "oven", "glyph": "oven", "weight": "regular", "size": 44, "color": "#f8a840" },
+    { "name": "drop", "glyph": "arrow-down", "weight": "bold", "size": 20, "color": "#f8a840" },
+    { "name": "pause", "glyph": "pause", "weight": "fill", "size": 16, "color": "#f8f0e8" },
+    { "name": "play", "glyph": "play", "weight": "fill", "size": 16, "color": "#f8f0e8" },
+    { "name": "plus", "glyph": "plus", "weight": "bold", "size": 18, "color": "#f8f0e8" },
+    { "name": "minus", "glyph": "minus", "weight": "bold", "size": 18, "color": "#f8f0e8" },
+    { "name": "arrow", "glyph": "arrow-right", "weight": "bold", "size": 16, "color": "#201008" }
+  ]
+}

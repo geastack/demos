@@ -1,0 +1,37 @@
+/* Ambient: the cover at the left, the time and the track beside it
+   (stacked layouts: the cover above, the copy centred beneath). */
+
+.ambient-art {
+  position: absolute;
+}
+
+.ambient-copy {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ambient-center {
+  align-items: center;
+}
+
+.ambient-track {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.ambient-line {
+  position: absolute;
+  width: 208px;
+  height: 2px;
+  border-radius: 1px;
+  background-color: var(--glass-2);
+}
+
+.ambient-fill {
+  height: 2px;
+  border-radius: 1px;
+}

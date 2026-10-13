@@ -1,0 +1,302 @@
+/* ---- Segments: one per step; done in amber, the current one filling ---- */
+
+.segments {
+  position: absolute;
+  height: 4px;
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+}
+
+.segment {
+  height: 4px;
+  border-radius: 2px;
+  background-color: var(--surface-2);
+}
+
+.segment-fill {
+  height: 4px;
+  border-radius: 2px;
+  background-color: var(--ember);
+}
+
+.segment-done .segment-fill {
+  background-color: var(--amber);
+}
+
+.step-body {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Each new step slides in from the right; two identical keyframes let
+   consecutive steps restart it. Translate only: the groups hold icons. */
+.slide-a {
+  animation: slide-a 440ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.slide-b {
+  animation: slide-b 440ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes slide-a {
+  from {
+    transform: translate(32px, 0px);
+  }
+
+  to {
+    transform: translate(0px, 0px);
+  }
+}
+
+@keyframes slide-b {
+  from {
+    transform: translate(32px, 0px);
+  }
+
+  to {
+    transform: translate(0px, 0px);
+  }
+}
+
+/* ---- Timed step ---- */
+
+.step-copy {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+}
+
+.step-detail {
+  margin-top: 4px;
+}
+
+.step-chips {
+  margin-top: 16px;
+  height: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+
+.chip-gap {
+  width: 8px;
+}
+
+.step-controls {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.control {
+  padding: 0 16px 0 14px;
+}
+
+/* The ring canvas is 176 px square at (288, 84): its centre (376, 172). */
+.timer-ring {
+  position: absolute;
+}
+
+.timer-readout {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.timer-paused {
+  color: var(--text-2);
+}
+
+.timer-caption {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+/* ---- Prompt ---- */
+
+.prompt-art {
+  position: absolute;
+  width: 136px;
+  height: 136px;
+}
+
+.pop-a {
+  animation: pop-a 520ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.pop-b {
+  animation: pop-b 520ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes pop-a {
+  0% {
+    transform: scale(0.6);
+  }
+
+  70% {
+    transform: scale(1.04);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes pop-b {
+  0% {
+    transform: scale(0.6);
+  }
+
+  70% {
+    transform: scale(1.04);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Glow without blur: opaque discs pre-blended over the background. */
+.prompt-glow-outer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 136px;
+  height: 136px;
+  border-radius: 68px;
+  background-color: #201810;
+}
+
+.prompt-glow-inner {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  width: 104px;
+  height: 104px;
+  border-radius: 52px;
+  background-color: #2c1c10;
+}
+
+/* A ring that keeps calling for attention. */
+.prompt-ring {
+  position: absolute;
+  left: 24px;
+  top: 24px;
+  width: 88px;
+  height: 88px;
+  border-radius: 44px;
+  box-sizing: border-box;
+  border: 2px solid #885028;
+  animation: call 1600ms cubic-bezier(0.2, 0.8, 0.2, 1) infinite both;
+}
+
+@keyframes call {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(1.45);
+  }
+}
+
+.prompt-tile {
+  position: absolute;
+  left: 28px;
+  top: 28px;
+  width: 80px;
+  height: 80px;
+  border-radius: 40px;
+  background-color: var(--surface-2);
+}
+
+.prompt-oven {
+  position: absolute;
+  left: 18px;
+  top: 22px;
+  width: 44px;
+  height: 44px;
+}
+
+/* The arrow keeps pointing into the oven. */
+.prompt-drop {
+  position: absolute;
+  left: 30px;
+  top: 2px;
+  width: 20px;
+  height: 20px;
+  animation: drop 1100ms ease-in-out infinite both;
+}
+
+@keyframes drop {
+  0% {
+    transform: translate(0px, -3px);
+  }
+
+  50% {
+    transform: translate(0px, 5px);
+  }
+
+  100% {
+    transform: translate(0px, -3px);
+  }
+}
+
+/* Turn: the arrows swing half a turn, rest, swing again. */
+.prompt-flip {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  width: 40px;
+  height: 40px;
+  animation: turn 1800ms cubic-bezier(0.6, 0, 0.2, 1) infinite both;
+}
+
+@keyframes turn {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  45% {
+    transform: rotate(180deg);
+  }
+
+  100% {
+    transform: rotate(180deg);
+  }
+}
+
+.prompt-copy {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+}
+
+.prompt-title {
+  margin-top: 2px;
+  margin-bottom: 4px;
+}
+
+.prompt-actions {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Stacked layouts centre the buttons under the ring. */
+.controls-center {
+  justify-content: center;
+}

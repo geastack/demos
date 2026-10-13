@@ -1,0 +1,150 @@
+/*
+ * Every typeface the gallery apps use, one family name per weight (the
+ * font atlas bakes a family at each size a single-class rule names it at,
+ * so declaring a face here costs nothing until a rule uses it). All OFL.
+ */
+
+@font-face {
+  font-family: "Hanken";
+  src: url("../fonts/HankenGrotesk-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Hanken SB";
+  src: url("../fonts/HankenGrotesk-SemiBold.ttf");
+}
+
+@font-face {
+  font-family: "Hanken XB";
+  src: url("../fonts/HankenGrotesk-ExtraBold.ttf");
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("../fonts/GeistMono-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Geist Mono Medium";
+  src: url("../fonts/GeistMono-Medium.ttf");
+}
+
+@font-face {
+  font-family: "JetBrains";
+  src: url("../fonts/JetBrainsMono-Medium.ttf");
+}
+
+@font-face {
+  font-family: "Doto";
+  src: url("../fonts/Doto-Black.ttf");
+}
+
+@font-face {
+  font-family: "Fraunces SB";
+  src: url("../fonts/Fraunces-SemiBold.ttf");
+}
+
+@font-face {
+  font-family: "Manrope M";
+  src: url("../fonts/Manrope-Medium.ttf");
+}
+
+@font-face {
+  font-family: "Manrope B";
+  src: url("../fonts/Manrope-Bold.ttf");
+}
+
+@font-face {
+  font-family: "Outfit XL";
+  src: url("../fonts/Outfit-ExtraLight.ttf");
+}
+
+@font-face {
+  font-family: "Outfit L";
+  src: url("../fonts/Outfit-Light.ttf");
+}
+
+@font-face {
+  font-family: "Outfit M";
+  src: url("../fonts/Outfit-Medium.ttf");
+}
+
+@font-face {
+  font-family: "Space Grotesk M";
+  src: url("../fonts/SpaceGrotesk-Medium.ttf");
+}
+
+@font-face {
+  font-family: "Space Grotesk B";
+  src: url("../fonts/SpaceGrotesk-Bold.ttf");
+}
+
+@font-face {
+  font-family: "Inter M";
+  src: url("../fonts/Inter-Medium.ttf");
+}
+
+@font-face {
+  font-family: "Inter SB";
+  src: url("../fonts/Inter-SemiBold.ttf");
+}
+
+@font-face {
+  font-family: "Barlow SC B";
+  src: url("../fonts/BarlowSemiCondensed-Bold.ttf");
+}
+
+@font-face {
+  font-family: "Barlow SC M";
+  src: url("../fonts/BarlowSemiCondensed-Medium.ttf");
+}
+
+@font-face {
+  font-family: "Barlow M";
+  src: url("../fonts/Barlow-Medium.ttf");
+}
+
+@font-face {
+  font-family: "Jakarta M";
+  src: url("../fonts/PlusJakartaSans-Medium.ttf");
+}
+
+@font-face {
+  font-family: "Jakarta B";
+  src: url("../fonts/PlusJakartaSans-Bold.ttf");
+}
+
+@font-face {
+  font-family: "Plex Cond SB";
+  src: url("../fonts/IBMPlexSansCondensed-SemiBold.ttf");
+}
+
+@font-face {
+  font-family: "Plex Cond";
+  src: url("../fonts/IBMPlexSansCondensed-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Plex Mono M";
+  src: url("../fonts/IBMPlexMono-Medium.ttf");
+}
+
+@font-face {
+  font-family: "Space Mono";
+  src: url("../fonts/SpaceMono-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Space Mono B";
+  src: url("../fonts/SpaceMono-Bold.ttf");
+}
+
+@font-face {
+  font-family: "Sora SB";
+  src: url("../fonts/Sora-SemiBold.ttf");
+}
+
+@font-face {
+  font-family: "Sora";
+  src: url("../fonts/Sora-Regular.ttf");
+}

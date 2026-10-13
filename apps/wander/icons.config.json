@@ -1,0 +1,15 @@
+{
+  "icons": [
+    { "name": "back", "glyph": "caret-left", "weight": "bold", "size": 20, "color": "#F8ECE0" },
+    { "name": "bookmark", "glyph": "bookmark-simple", "weight": "fill", "size": 14, "color": "#F8ECE0" },
+    { "name": "season", "glyph": "sun-horizon", "weight": "bold", "size": 14, "color": "#F8ECE0" },
+    { "name": "flight", "glyph": "airplane-tilt", "weight": "bold", "size": 14, "color": "#F8ECE0" },
+    { "name": "price", "glyph": "coins", "weight": "bold", "size": 14, "color": "#F8ECE0" },
+    { "name": "season-ink", "glyph": "sun-horizon", "weight": "bold", "size": 14, "color": "#706460" },
+    { "name": "flight-ink", "glyph": "airplane-tilt", "weight": "bold", "size": 14, "color": "#706460" },
+    { "name": "zone-ink", "glyph": "clock", "weight": "bold", "size": 14, "color": "#706460" },
+    { "name": "arrow-white", "glyph": "arrow-right", "weight": "bold", "size": 16, "color": "#FFFFFF" },
+    { "name": "arrow-ink", "glyph": "arrow-right", "weight": "bold", "size": 16, "color": "#201C18" },
+    { "name": "check", "glyph": "check", "weight": "bold", "size": 16, "color": "#F8ECE0" }
+  ]
+}
