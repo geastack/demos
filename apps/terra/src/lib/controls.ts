@@ -115,6 +115,8 @@ export class Controls {
   }
 
   private span(): number {
-    return Math.hypot(this.secondX - this.firstX, this.secondY - this.firstY);
+    const dx = this.secondX - this.firstX;
+    const dy = this.secondY - this.firstY;
+    return Math.sqrt(dx * dx + dy * dy);
   }
 }
