@@ -38,6 +38,8 @@ The demos started life in the STM32F746G-Discovery gallery.
 
 Framebuffer grabs from the board (480x272), taken in the original gallery.
 
+<img src="docs/shots/stm32f746g-disco/poster.png" alt="All demos on the STM32F746G-Discovery">
+
 | Demo | Screens |
 |---|---|
 | [bloom](apps/bloom) | <img src="docs/shots/stm32f746g-disco/bloom-coral.png" width="300" alt="bloom coral"> |
