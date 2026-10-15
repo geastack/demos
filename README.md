@@ -34,6 +34,26 @@ and licensed GPL-3.0-only.
 
 The demos started life in the STM32F746G-Discovery gallery.
 
+## On the STM32F746G-Discovery
+
+Framebuffer grabs from the board (480x272), taken in the original gallery.
+
+| Demo | Screens |
+|---|---|
+| [bloom](apps/bloom) | <img src="docs/shots/stm32f746g-disco/bloom-coral.png" width="300" alt="bloom coral"> |
+| [neon](apps/neon) | <img src="docs/shots/stm32f746g-disco/neon-title.png" width="300" alt="neon title"> <img src="docs/shots/stm32f746g-disco/neon-run.png" width="300" alt="neon run"> |
+| [ripple](apps/ripple) | <img src="docs/shots/stm32f746g-disco/ripple-bloom.png" width="300" alt="ripple bloom"> <img src="docs/shots/stm32f746g-disco/ripple-ink.png" width="300" alt="ripple ink"> |
+| [reel](apps/reel) | <img src="docs/shots/stm32f746g-disco/reel-rotozoom.png" width="300" alt="reel rotozoom"> <img src="docs/shots/stm32f746g-disco/reel-vortex.png" width="300" alt="reel vortex"> |
+| [terra](apps/terra) | <img src="docs/shots/stm32f746g-disco/terra-alps.png" width="300" alt="terra alps"> <img src="docs/shots/stm32f746g-disco/terra-dunes.png" width="300" alt="terra dunes"> |
+| [intro](apps/intro) | <img src="docs/shots/stm32f746g-disco/intro-traces.png" width="300" alt="intro traces"> <img src="docs/shots/stm32f746g-disco/intro-spark.png" width="300" alt="intro spark"> <img src="docs/shots/stm32f746g-disco/intro-final.png" width="300" alt="intro final"> |
+| [lantern](apps/lantern) | <img src="docs/shots/stm32f746g-disco/lantern-run.png" width="300" alt="lantern run"> <img src="docs/shots/stm32f746g-disco/lantern-end.png" width="300" alt="lantern end"> |
+| [aviator](apps/aviator) | <img src="docs/shots/stm32f746g-disco/aviator-fly.png" width="300" alt="aviator fly"> <img src="docs/shots/stm32f746g-disco/aviator-over.png" width="300" alt="aviator over"> |
+| [orbit](apps/orbit) | <img src="docs/shots/stm32f746g-disco/orbit.png" width="300" alt="orbit"> |
+| [wander](apps/wander) | <img src="docs/shots/stm32f746g-disco/wander-discover.png" width="300" alt="wander discover"> <img src="docs/shots/stm32f746g-disco/wander-detail.png" width="300" alt="wander detail"> |
+| [nimbus](apps/nimbus) | <img src="docs/shots/stm32f746g-disco/nimbus-now.png" width="300" alt="nimbus now"> <img src="docs/shots/stm32f746g-disco/nimbus-week.png" width="300" alt="nimbus week"> |
+| [sonora](apps/sonora) | <img src="docs/shots/stm32f746g-disco/sonora-playing.png" width="300" alt="sonora playing"> <img src="docs/shots/stm32f746g-disco/sonora-browse.png" width="300" alt="sonora browse"> |
+| [ember](apps/ember) | <img src="docs/shots/stm32f746g-disco/ember-recipes.png" width="300" alt="ember recipes"> <img src="docs/shots/stm32f746g-disco/ember-cook.png" width="300" alt="ember cook"> |
+
 ## Working here
 
 Install the released dependencies from the repository root:
