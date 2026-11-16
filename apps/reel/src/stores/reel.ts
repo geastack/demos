@@ -159,6 +159,7 @@ class Reel {
     const previous = (scene + SCENE_COUNT - 1) % SCENE_COUNT;
     // The boot title has nothing before it.
     const entering = this.looped || scene !== TITLE;
+    presenter.acquire();
     this.scenes.render(scene, presenter.pixels, presenter.words, local);
 
     const exit = EXITS[previous];

@@ -26,7 +26,8 @@ function truchet(x: number, y: number): number {
 }
 
 export class Rotozoom {
-  private readonly texture = new Uint8Array(65536);
+  readonly baked = new Uint8Array(65536);
+  texture: Uint8Array = this.baked; // what render reads: `baked`, or a copy in fast RAM
   private readonly palette = new Uint16Array(256);
   private readonly cover = new Uint16Array(TILE * TILE); // one tile's arc coverage, Q8
   private angle = 0;
@@ -48,7 +49,18 @@ export class Rotozoom {
     return end === 256;
   }
 
+  private du = 0;
+  private dv = 0;
+  private rowU = 0;
+  private rowV = 0;
+
   render(words: Uint32Array, t: number) {
+    this.prepare(t);
+    this.rows(words, 0, HEIGHT);
+  }
+
+  // The frame's state at `t`; `rows` then draws any band of it.
+  prepare(t: number) {
     // Dragging turns the texture (x) and zooms it (y) on top of the script.
     this.angle += touch.dragX * 0.006;
     this.zoom += touch.dragY * 0.004;
@@ -61,32 +73,43 @@ export class Rotozoom {
     // quarter), and the top-left pixel's texel, so the centre stays put.
     const c = cosTurns(angle) * zoom;
     const s = sinTurns(angle) * zoom;
-    const du = (c * 65536) | 0;
-    const dv = (s * 65536) | 0;
+    this.du = (c * 65536) | 0;
+    this.dv = (s * 65536) | 0;
     const panU = t * 22;
     const panV = t * 9;
-    let rowU = ((panU - c * HALF_W + s * (HEIGHT / 2)) * 65536) | 0;
-    let rowV = ((panV - s * HALF_W - c * (HEIGHT / 2)) * 65536) | 0;
+    this.rowU = ((panU - c * HALF_W + s * (HEIGHT / 2)) * 65536) | 0;
+    this.rowV = ((panV - s * HALF_W - c * (HEIGHT / 2)) * 65536) | 0;
+  }
+
+  // Frame rows [first, first + count) into `words`, whose row 0 is frame row
+  // `first`. A row down steps (u, v) by (-dv, du), wrapping as 32-bit.
+  rows(words: Uint32Array, first: number, count: number) {
+    const du: i32 = this.du | 0;
+    const dv: i32 = this.dv | 0;
+    let rowU: i32 = (this.rowU - Math.imul(dv, first)) | 0;
+    let rowV: i32 = (this.rowV + Math.imul(du, first)) | 0;
     const texture = this.texture;
     const palette = this.palette;
-    const halfW = HALF_W | 0;
-    const height = HEIGHT | 0;
+    const halfW: i32 = HALF_W | 0;
+    const height: i32 = HEIGHT | 0;
 
-    for (let y = 0; y < height; y++) {
-      let u = rowU;
-      let v = rowV;
-      const line = y * halfW;
-      for (let x = 0; x < halfW; x++) {
-        const first = palette[texture[(((v >>> 8) & 0xff00) | ((u >>> 16) & 0xff)) & 0xffff] & 255];
-        u = (u + du) | 0;
-        v = (v + dv) | 0;
-        const second = palette[texture[(((v >>> 8) & 0xff00) | ((u >>> 16) & 0xff)) & 0xffff] & 255];
-        u = (u + du) | 0;
-        v = (v + dv) | 0;
+    // Arithmetic shifts are fine: the masks keep only bits the sign never reaches.
+    const end: i32 = Math.min(height, first + count) | 0;
+    for (let y: i32 = first | 0; y < end; y++) {
+      let u: i32 = rowU;
+      let v: i32 = rowV;
+      const line: i32 = (y - first) * halfW;
+      for (let x: i32 = 0; x < halfW; x++) {
+        const first: i32 = palette[texture[(((v >> 8) & 0xff00) | ((u >> 16) & 0xff)) & 0xffff] & 255];
+        u = u + du;
+        v = v + dv;
+        const second: i32 = palette[texture[(((v >> 8) & 0xff00) | ((u >> 16) & 0xff)) & 0xffff] & 255];
+        u = u + du;
+        v = v + dv;
         words[line + x] = first | (second << 16);
       }
-      rowU = (rowU - dv) | 0;
-      rowV = (rowV + du) | 0;
+      rowU = rowU - dv;
+      rowV = rowV + du;
     }
   }
 
@@ -94,7 +117,7 @@ export class Rotozoom {
   // arcs' palette index shifts across the texture so they change colour. A
   // flipped tile mirrors the arcs so they join the other corners.
   private bakeRow(v: number) {
-    const texture = this.texture;
+    const texture = this.baked;
     const cover = this.cover;
     const tileRow = (v >> 5) * 8;
     const coverRow = (v & 31) * TILE;

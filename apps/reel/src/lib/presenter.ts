@@ -37,14 +37,22 @@ function easeOut(e: number): number {
 // Owns the frame the effects render into and puts it on the canvas, with
 // the caption cards, washes and progress bar drawn over it in one batch.
 //
+// Where the display allows it the frame IS the display buffer the next swap
+// shows (`acquire` names it each frame), so presenting copies nothing;
+// elsewhere it is one ImageData565 of our own.
+//
 // Every canvas call goes through the `ctx` field: generated code passes a
 // context parameter by value, and a copy's recorded commands are lost.
 // Style writes skip repeats: each one also copies the context.
 export class Presenter {
-  readonly pixels: Uint16Array;
-  readonly words: Uint32Array;
+  pixels: Uint16Array;
+  words: Uint32Array;
   private readonly ctx: CanvasRenderingContext2D;
-  private readonly image: ImageData565;
+  private image: ImageData565;
+  private readonly panelImages: ImageData565[] = [];
+  private readonly panelWords: Uint32Array[] = [];
+  private own: ImageData565 | null = null;
+  private drawingOwn = false; // `image` is `own`, not a display buffer
   private readonly inkCentres = new Float64Array(FONTS.length);
   private font = "";
   private fill = "";
@@ -52,13 +60,45 @@ export class Presenter {
 
   constructor(ctx: CanvasRenderingContext2D) {
     this.ctx = ctx;
-    this.image = ctx.createImageData565(WIDTH, FRAME_ROWS);
+    const buffers = ctx.panelBufferCount();
+    for (let i = 0; i < buffers; i++) {
+      const image = ctx.createPanelImageData565(i);
+      if (image.width !== WIDTH || image.height !== FRAME_ROWS) break;
+      this.panelImages.push(image);
+      this.panelWords.push(wordsOf(image.data16));
+    }
+    if (this.panelImages.length < buffers || buffers < 2) this.panelImages.length = 0;
+    this.drawingOwn = this.panelImages.length === 0;
+    this.image = this.drawingOwn ? this.ownImage() : this.panelImages[0];
     this.pixels = this.image.data16;
     this.words = wordsOf(this.pixels);
     for (let f = 0; f < FONTS.length; f++) {
       this.setFont(FONTS[f]);
       this.inkCentres[f] = this.ctx.measureTextInkCenter(INK_SAMPLES[f]);
     }
+  }
+
+  // Points `pixels` and `words` at the buffer this frame renders into; call
+  // before drawing a frame. That buffer holds an older frame, so every frame
+  // repaints every pixel.
+  acquire() {
+    const index = this.panelImages.length > 0 ? this.ctx.acquirePanelBuffer() : -1;
+    if (index >= 0 && index < this.panelImages.length) {
+      this.image = this.panelImages[index];
+      this.pixels = this.image.data16;
+      this.words = this.panelWords[index];
+      this.drawingOwn = false;
+    } else if (!this.drawingOwn) {
+      this.drawingOwn = true;
+      this.image = this.ownImage();
+      this.pixels = this.image.data16;
+      this.words = wordsOf(this.pixels);
+    }
+  }
+
+  private ownImage(): ImageData565 {
+    if (!this.own) this.own = this.ctx.createImageData565(WIDTH, FRAME_ROWS);
+    return this.own;
   }
 
   // `card` -1 for none, shown `time` seconds, `remaining` seconds left;

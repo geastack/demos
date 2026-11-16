@@ -1,9 +1,11 @@
-import { blend565, buildRamp, HALF_CELLS, HALF_H, HALF_W, rgb565, sinTurns, upscale } from "../lib/frame";
+import { blend565, buildRamp, HALF_CELLS, HALF_H, HALF_W, HEIGHT, rgb565, sinTurns, upscaleRows } from "../lib/frame";
+import { Simd } from "@geastack/core";
 import { touch } from "../lib/touch";
 
 // The iso-surface of six summed inverse-square fields, at half resolution.
 // One falloff table spans every offset between a cell and a ball: each
-// ball reads it through its own window.
+// ball reads it through its own window. A cell's sum is clamped to 255, so
+// each entry is too: the field comes out the same and the table fits bytes.
 
 const BALLS = 6;
 const LUT_W = 2 * HALF_W;
@@ -22,7 +24,7 @@ const OUTSIDE = [0, 6, 14, 34, 1, 18, 60, 92];
 const INSIDE = [0, 200, 40, 120, 0.45, 255, 124, 104, 1, 255, 220, 168];
 
 export class Metaballs {
-  private readonly falloff = new Uint16Array(LUT_CELLS);
+  private readonly falloff = new Uint8Array(LUT_CELLS);
   private readonly field = new Uint8Array(HALF_CELLS);
   private readonly palette = new Uint16Array(256);
   private readonly windows = new Int32Array(BALLS); // each ball's offset into the falloff table
@@ -41,7 +43,7 @@ export class Metaballs {
       for (let x = 0; x < lutW; x++) {
         const dx = x - HALF_W;
         const value = (STRENGTH * THRESHOLD) / (dx * dx + dy * dy + 1);
-        falloff[y * lutW + x] = Math.min(1023, value);
+        falloff[y * lutW + x] = Math.min(255, value);
       }
     }
     this.bakedRows = end;
@@ -49,6 +51,12 @@ export class Metaballs {
   }
 
   render(words: Uint32Array, t: number) {
+    this.prepare(t);
+    this.rows(words, 0, HEIGHT);
+  }
+
+  // The frame's state at `t`; `rows` then draws any band of it.
+  prepare(t: number) {
     const windows = this.windows;
     for (let b = 0; b < BALLS; b++) {
       const phase = b * 0.17;
@@ -62,36 +70,16 @@ export class Metaballs {
     }
 
     this.sum();
-    upscale(this.field, this.palette, words);
   }
 
+  rows(words: Uint32Array, first: number, count: number) {
+    upscaleRows(this.field, this.palette, words, first, count);
+  }
+
+  // Each cell is the clamped sum of six windows into the falloff table, one per
+  // ball: a strided byte-window sum the chip vectorizes.
   private sum() {
-    const falloff = this.falloff;
-    const field = this.field;
-    const windows = this.windows;
-    const w0 = windows[0] | 0;
-    const w1 = windows[1] | 0;
-    const w2 = windows[2] | 0;
-    const w3 = windows[3] | 0;
-    const w4 = windows[4] | 0;
-    const w5 = windows[5] | 0;
-    const halfW = HALF_W | 0;
-    const halfH = HALF_H | 0;
-    const lutW = LUT_W | 0;
-    for (let y = 0; y < halfH; y++) {
-      const offset = y * lutW;
-      const a = w0 + offset;
-      const b = w1 + offset;
-      const c = w2 + offset;
-      const d = w3 + offset;
-      const e = w4 + offset;
-      const f = w5 + offset;
-      const row = y * halfW;
-      for (let x = 0; x < halfW; x++) {
-        const sum = falloff[a + x] + falloff[b + x] + falloff[c + x] + falloff[d + x] + falloff[e + x] + falloff[f + x];
-        field[row + x] = Math.min(255, sum);
-      }
-    }
+    Simd.sumWindowsU8(this.field, 0, HALF_W, this.falloff, this.windows, BALLS, LUT_W, HALF_W, HALF_H, 1, 0);
   }
 
   private bakePalette() {

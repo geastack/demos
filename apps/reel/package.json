@@ -21,7 +21,10 @@
       "esp32": true,
       "stm32": true
     },
-    "cssDevicePixelRatio": 1
+    "cssDevicePixelRatio": 1,
+    "defines": [
+      "GEA_EMBEDDED_DISPLAY_RGB_SCAN_FBS=3"
+    ]
   },
   "license": "GPL-3.0-only"
 }

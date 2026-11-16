@@ -115,29 +115,37 @@ export function wordsOf(pixels: Uint16Array): Uint32Array {
 // palette: even pixels take a field sample, odd ones the mean of their
 // neighbours, the last row and column repeat the edge.
 export function upscale(field: Uint8Array, palette: Uint16Array, words: Uint32Array) {
-  const halfW = HALF_W | 0;
-  const halfH = HALF_H | 0;
-  const width = WIDTH | 0;
-  const last = halfW - 1;
-  for (let y = 0; y < halfH; y++) {
-    const above = y * halfW;
-    const below = y < halfH - 1 ? above + halfW : above;
-    const aboveNext = above + 1;
-    const belowNext = below + 1;
-    const even = y * width;
-    const odd = even + halfW;
-    for (let x = 0; x < last; x++) {
-      const a = field[above + x];
-      const b = field[aboveNext + x];
-      const c = field[below + x];
-      const d = field[belowNext + x];
+  upscaleRows(field, palette, words, 0, HEIGHT);
+}
+
+// The frame rows [first, first + count) of `upscale` into `words`, whose row 0
+// is frame row `first`; both even.
+export function upscaleRows(field: Uint8Array, palette: Uint16Array, words: Uint32Array, first: number, count: number) {
+  const halfW: i32 = HALF_W | 0;
+  const halfH: i32 = HALF_H | 0;
+  const width: i32 = WIDTH | 0;
+  const last: i32 = halfW - 1;
+  const top: i32 = (first >> 1) | 0;
+  const end: i32 = Math.min(halfH, (first + count) >> 1) | 0;
+  for (let y: i32 = top; y < end; y++) {
+    const above: i32 = y * halfW;
+    const below: i32 = y < halfH - 1 ? above + halfW : above;
+    const aboveNext: i32 = above + 1;
+    const belowNext: i32 = below + 1;
+    const even: i32 = (y - top) * width;
+    const odd: i32 = even + halfW;
+    for (let x: i32 = 0; x < last; x++) {
+      const a: i32 = field[above + x];
+      const b: i32 = field[aboveNext + x];
+      const c: i32 = field[below + x];
+      const d: i32 = field[belowNext + x];
       words[even + x] = palette[a & 255] | (palette[((a + b) >> 1) & 255] << 16);
       words[odd + x] = palette[((a + c) >> 1) & 255] | (palette[((a + b + c + d) >> 2) & 255] << 16);
     }
 
-    const a = field[above + last];
-    const c = field[below + last];
-    const edge = palette[((a + c) >> 1) & 255];
+    const a: i32 = field[above + last];
+    const c: i32 = field[below + last];
+    const edge: i32 = palette[((a + c) >> 1) & 255];
     words[even + last] = palette[a & 255] * 0x10001;
     words[odd + last] = edge * 0x10001;
   }

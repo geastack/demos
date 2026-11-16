@@ -1,4 +1,5 @@
-import { buildRamp, HALF_CELLS, HALF_H, HALF_W, hash, random32, sinTurns, upscale } from "../lib/frame";
+import { buildRamp, HALF_CELLS, HALF_H, HALF_W, hash, HEIGHT, random32, sinTurns, upscaleRows } from "../lib/frame";
+import { Simd } from "@geastack/core";
 import { touch } from "../lib/touch";
 
 // Two layers on a half-resolution field:
@@ -20,10 +21,23 @@ const RAMP = [
   0, 10, 6, 24, 0.2, 44, 12, 84, 0.42, 176, 30, 108, 0.62, 250, 104, 56, 0.8, 255, 192, 92, 1, 255, 248, 225,
 ];
 
+function riseWindows(): Int32Array {
+  const windows = new Int32Array(4);
+  windows[0] = HALF_W;
+  windows[1] = HALF_W + 1;
+  windows[2] = HALF_W + 2;
+  windows[3] = HALF_W * 2 + 1;
+  return windows;
+}
+
 export class Fire {
-  private readonly noise = new Uint8Array(65536); // 256x256 tileable value noise
+  readonly baked = new Uint8Array(65536); // 256x256 tileable value noise
+  noise: Uint8Array = this.baked; // what render reads: `baked`, or a copy in fast RAM
   private readonly smooth = new Uint16Array(256); // smoothstep of i / 256, Q8
   private readonly plume = new Uint8Array(PLUME_CELLS);
+  private readonly edges = new Uint8Array(HALF_H * 2); // each row's two edge cells, taken before the rows below move
+  // The four windows below plume cell (row 0, x 1): below-left, below, below-right, two below.
+  private readonly riseWindows = riseWindows();
   private readonly field = new Uint8Array(HALF_CELLS);
   private readonly palette = new Uint16Array(256);
   private bakedRows = 0;
@@ -39,7 +53,7 @@ export class Fire {
     }
 
     const end = Math.min(256, this.bakedRows + BAKE_ROWS);
-    const noise = this.noise;
+    const noise = this.baked;
     for (let v = this.bakedRows; v < end; v++) {
       for (let u = 0; u < 256; u++) {
         const coarse = this.valueNoise(u, v, 5, 17);
@@ -52,6 +66,12 @@ export class Fire {
   }
 
   render(words: Uint32Array, t: number) {
+    this.prepare(t);
+    this.rows(words, 0, HEIGHT);
+  }
+
+  // The frame's state at `t`; `rows` then draws any band of it.
+  prepare(t: number) {
     // A finger feeds a plume; with no finger a wandering ember does.
     if (touch.down) {
       this.feed((touch.x | 0) >> 1, (touch.y | 0) >> 1, 255);
@@ -62,7 +82,10 @@ export class Fire {
     }
     this.rise();
     this.burn(t);
-    upscale(this.field, this.palette, words);
+  }
+
+  rows(words: Uint32Array, first: number, count: number) {
+    upscaleRows(this.field, this.palette, words, first, count);
   }
 
   // Value noise tiling over 256 texels, with lattice cells of 1 << `shift`
@@ -111,25 +134,29 @@ export class Fire {
 
   // Heat rises: each cell averages the three cells below it and the one
   // below those, cooled; the edge columns repeat themselves.
+  // Each plume cell takes 1016/1024 of the mean of the three cells below it and
+  // the one two below: a four-window byte sum the chip vectorizes across each
+  // row. The two edge cells read past the row, so they are taken first, while
+  // the rows below still hold last frame's heat.
   private rise() {
     const plume = this.plume;
-    const halfW = HALF_W | 0;
-    const halfH = HALF_H | 0;
-    const last = halfW - 1;
-    for (let y = 0; y < halfH; y++) {
-      const row = y * halfW;
-      const below = row + halfW;
-      const belowLeft = below - 1;
-      const belowRight = below + 1;
-      const below2 = below + halfW;
-      const first = plume[below] * 2 + plume[below + 1] + plume[below2];
-      const end = plume[below + last - 1] + plume[below + last] * 2 + plume[below2 + last];
-      for (let x = 1; x < last; x++) {
-        const sum = plume[belowLeft + x] + plume[below + x] + plume[belowRight + x] + plume[below2 + x];
-        plume[row + x] = (sum * KEEP) >> 12;
-      }
-      plume[row] = (first * KEEP) >> 12;
-      plume[row + last] = (end * KEEP) >> 12;
+    const edges = this.edges;
+    const halfW: i32 = HALF_W | 0;
+    const halfH: i32 = HALF_H | 0;
+    const last: i32 = halfW - 1;
+    for (let y: i32 = 0; y < halfH; y++) {
+      const below: i32 = (y + 1) * halfW;
+      const below2: i32 = below + halfW;
+      const first: i32 = plume[below] * 2 + plume[below + 1] + plume[below2];
+      const end: i32 = plume[below + last - 1] + plume[below + last] * 2 + plume[below2 + last];
+      edges[y * 2] = (first * KEEP) >> 12;
+      edges[y * 2 + 1] = (end * KEEP) >> 12;
+    }
+    Simd.sumWindowsU8(plume, 1, halfW, plume, this.riseWindows, 4, halfW, last - 1, halfH, KEEP, 12);
+    for (let y: i32 = 0; y < halfH; y++) {
+      const row: i32 = y * halfW;
+      plume[row] = edges[y * 2];
+      plume[row + last] = edges[y * 2 + 1];
     }
   }
 
@@ -138,28 +165,29 @@ export class Fire {
     const noise = this.noise;
     const plume = this.plume;
     const field = this.field;
-    const halfW = HALF_W | 0;
-    const halfH = HALF_H | 0;
+    const halfW: i32 = HALF_W | 0;
+    const halfH: i32 = HALF_H | 0;
     // Noise rows per field row, Q8: flames keep their proportions of the
     // frame (the noise was tuned on 136 rows).
-    const rowScale = Math.round((256 * 136) / halfH) | 0;
-    const gradient = Math.round((330 * 256) / halfH) | 0;
+    const rowScale: i32 = Math.round((256 * 136) / halfH) | 0;
+    const gradient: i32 = Math.round((330 * 256) / halfH) | 0;
     // The flames' height breathes over the scene.
-    const lift = 95 + ((sinTurns(t * 0.11) * 25) | 0);
-    const scroll = (t * RISE) | 0;
-    for (let y = 0; y < halfH; y++) {
+    const lift: i32 = (95 + ((sinTurns(t * 0.11) * 25) | 0)) | 0;
+    const scroll: i32 = (t * RISE) | 0;
+    for (let y: i32 = 0; y < halfH; y++) {
       // Heat from the gradient: cold at the top, hot at the bed.
-      const base = ((y * gradient) >> 8) - lift;
-      const ny = (y * rowScale) >> 8;
-      const coarse = ((ny + scroll) & 255) * 256;
-      const fine = ((ny * 2 + scroll * 2 + 128) & 255) * 256;
-      const row = y * halfW;
-      for (let x = 0; x < halfW; x++) {
+      const base: i32 = ((y * gradient) >> 8) - lift;
+      const ny: i32 = (y * rowScale) >> 8;
+      const coarse: i32 = ((ny + scroll) & 255) * 256;
+      const fine: i32 = ((ny * 2 + scroll * 2 + 128) & 255) * 256;
+      const row: i32 = y * halfW;
+      for (let x: i32 = 0; x < halfW; x++) {
         // Noise features are taller than they are wide: flame tongues.
-        const n =
+        const n: i32 =
           noise[(coarse + ((x * 2) & 255)) & 0xffff] + (noise[(fine + ((x * 3 + 64) & 255)) & 0xffff] >> 1) - 191;
-        const heat = Math.max(0, base + ((n * 3) >> 2)) + plume[row + x];
-        field[row + x] = Math.min(255, heat);
+        const warm: i32 = base + ((n * 3) >> 2);
+        const heat: i32 = (warm > 0 ? warm : 0) + plume[row + x];
+        field[row + x] = heat < 255 ? heat : 255;
       }
     }
   }

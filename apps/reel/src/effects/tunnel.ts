@@ -1,4 +1,4 @@
-import { blend565, buildRamp, HALF_H, HALF_W, hash, rgb565, sinTurns, WIDTH } from "../lib/frame";
+import { blend565, buildRamp, HALF_H, HALF_W, hash, HEIGHT, rgb565, sinTurns, WIDTH } from "../lib/frame";
 import { touch } from "../lib/touch";
 
 // A textured tunnel flight through angle/depth lookup tables, rendered at
@@ -28,7 +28,8 @@ const RAMP = [0, 10, 12, 40, 0.35, 30, 40, 120, 0.7, 40, 170, 230, 0.9, 150, 240
 export class Tunnel {
   private readonly coords = new Uint16Array(LUT_CELLS); // (depth << 8) | angle
   private readonly shade = new Uint8Array(LUT_CELLS); // 0 (far, dark) .. SHADES - 1 (near)
-  private readonly texture = new Uint8Array(65536);
+  readonly baked = new Uint8Array(65536);
+  texture: Uint8Array = this.baked; // what render reads: `baked`, or a copy in fast RAM
   private readonly palette = new Uint16Array(SHADES * 256);
   private centerX = 0;
   private centerY = 0;
@@ -50,7 +51,18 @@ export class Tunnel {
     return end === lutH;
   }
 
+  private offsetX = 0;
+  private offsetY = 0;
+  private spin = 0;
+  private travel = 0;
+
   render(words: Uint32Array, t: number) {
+    this.prepare(t);
+    this.rows(words, 0, HEIGHT);
+  }
+
+  // The frame's state at `t`; `rows` then draws any band of it.
+  prepare(t: number) {
     // The vanishing point wanders on a Lissajous path; a finger steers it.
     let targetX = sinTurns(t * 0.09) * 0.8;
     let targetY = sinTurns(t * 0.13 + 0.1) * 0.8;
@@ -62,28 +74,39 @@ export class Tunnel {
     this.centerY += (targetY - this.centerY) * 0.08;
 
     // Moving the window left moves the vanishing point right.
-    const offsetX = (MARGIN_X - ((this.centerX * MARGIN_X) | 0)) | 0;
-    const offsetY = (MARGIN_Y - ((this.centerY * MARGIN_Y) | 0)) | 0;
-    const spin = ((t * 24) | 0) & 255;
-    const travel = (((t * 150) | 0) & 255) << 8;
+    this.offsetX = (MARGIN_X - ((this.centerX * MARGIN_X) | 0)) | 0;
+    this.offsetY = (MARGIN_Y - ((this.centerY * MARGIN_Y) | 0)) | 0;
+    this.spin = ((t * 24) | 0) & 255;
+    this.travel = (((t * 150) | 0) & 255) << 8;
+  }
+
+  // Frame rows [first, first + count) into `words`, whose row 0 is frame row
+  // `first`; both even (each LUT row fills two).
+  rows(words: Uint32Array, first: number, count: number) {
+    const offsetX: i32 = this.offsetX | 0;
+    const offsetY: i32 = this.offsetY | 0;
+    const spin: i32 = this.spin | 0;
+    const travel: i32 = this.travel | 0;
     const coords = this.coords;
     const shade = this.shade;
     const texture = this.texture;
     const palette = this.palette;
-    const halfW = HALF_W | 0;
-    const halfH = HALF_H | 0;
-    const lutW = LUT_W | 0;
-    const width = WIDTH | 0;
+    const halfW: i32 = HALF_W | 0;
+    const halfH: i32 = HALF_H | 0;
+    const lutW: i32 = LUT_W | 0;
+    const width: i32 = WIDTH | 0;
 
-    for (let y = 0; y < halfH; y++) {
-      const row = (y + offsetY) * lutW + offsetX;
-      const even = y * width;
-      const odd = even + halfW;
-      for (let x = 0; x < halfW; x++) {
-        const c = coords[row + x];
-        const texel = ((c + travel) & 0xff00) | ((c + spin) & 0xff);
-        const colour = palette[((shade[row + x] << 8) | texture[texel & 0xffff]) & 4095];
-        const pair = colour * 0x10001;
+    const top: i32 = (first >> 1) | 0;
+    const end: i32 = Math.min(halfH, (first + count) >> 1) | 0;
+    for (let y: i32 = top; y < end; y++) {
+      const row: i32 = (y + offsetY) * lutW + offsetX;
+      const even: i32 = (y - top) * width;
+      const odd: i32 = even + halfW;
+      for (let x: i32 = 0; x < halfW; x++) {
+        const c: i32 = coords[row + x];
+        const texel: i32 = ((c + travel) & 0xff00) | ((c + spin) & 0xff);
+        const colour: i32 = palette[((shade[row + x] << 8) | texture[texel & 0xffff]) & 4095];
+        const pair: i32 = colour * 0x10001;
         words[even + x] = pair;
         words[odd + x] = pair;
       }
@@ -93,7 +116,7 @@ export class Tunnel {
   // Panels with bevelled seams, a few lit windows, and a thin light ring
   // every quarter of the texture's depth.
   private bakeTexture() {
-    const texture = this.texture;
+    const texture = this.baked;
     for (let v = 0; v < 256; v++) {
       for (let u = 0; u < 256; u++) {
         const cu = u & 31;
