@@ -18,7 +18,11 @@
     "entry": "src/index.tsx",
     "targets": {
       "web": true,
-      "esp32": true,
+      "esp32": {
+        "psram": { "speed": 120 },
+        "flashFreq": 40,
+        "display": { "copyBack": "dma", "bounceRows": 20, "gridStrips": true }
+      },
       "stm32": true
     },
     "cssDevicePixelRatio": 1,
