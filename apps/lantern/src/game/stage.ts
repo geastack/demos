@@ -132,9 +132,9 @@ export class Stage {
 
   // Per-frame scratch (no allocation in the frame loop).
   private readonly dir = new Float32Array(3);
-  private camX = 0;
-  private camY = 0;
-  private camZ = 0;
+  private camX: f32 = 0;
+  private camY: f32 = 0;
+  private camZ: f32 = 0;
   // The camera's right and up vectors, for glows that face it.
   private readonly right = new Float32Array(3);
   private readonly up = new Float32Array(3);
@@ -375,7 +375,7 @@ export class Stage {
   }
 
   // A stone lantern's base height on the bank at `u`.
-  private toroY(u: number): number {
+  private toroY(u: f32): f32 {
     return bankHeight(Math.abs(u) - HALF_WIDTH) - 0.08;
   }
 
@@ -517,7 +517,7 @@ export class Stage {
   }
 
   // A glow lying on the water, faded out with distance.
-  private flatGlow(x: number, y: number, z: number, radius: number, r: number, g: number, b: number) {
+  private flatGlow(x: f32, y: f32, z: f32, radius: f32, r: f32, g: f32, b: f32) {
     const fade = this.distanceFade(x, z);
     if (fade <= 0 || this.glowCount >= WORLD_GLOW_POOL) return;
 
@@ -528,13 +528,14 @@ export class Stage {
   }
 
   // A glow facing the camera.
-  private facingGlow(x: number, y: number, z: number, radius: number, r: number, g: number, b: number) {
+  private facingGlow(x: f32, y: f32, z: f32, radius: f32, r: f32, g: f32, b: f32) {
     if (this.glowCount >= WORLD_GLOW_POOL) return;
 
     const a = this.worldGlows.instanceMatrix.array;
     const o = this.glowCount * 16;
     const right = this.right;
     const up = this.up;
+    radius = Math.fround(radius);
     a[o] = right[0] * radius;
     a[o + 1] = right[1] * radius;
     a[o + 2] = right[2] * radius;
@@ -554,7 +555,7 @@ export class Stage {
     this.tint(r, g, b);
   }
 
-  private tint(r: number, g: number, b: number) {
+  private tint(r: f32, g: f32, b: f32) {
     const tints = this.worldGlows.instanceColor.array;
     const o = this.glowCount * 3;
     tints[o] = r;
@@ -563,7 +564,7 @@ export class Stage {
     this.glowCount++;
   }
 
-  private distanceFade(x: number, z: number): number {
+  private distanceFade(x: f32, z: f32): f32 {
     const dx = x - this.camX;
     const dz = z - this.camZ;
     const d = Math.sqrt(dx * dx + dz * dz);
@@ -628,19 +629,19 @@ function finish(mesh: InstancedMesh, count: number) {
 // Writes a rotation (row-major r00..r22) and a translation at `o`.
 function writeMatrix(
   e: Float32Array,
-  o: number,
-  r00: number,
-  r01: number,
-  r02: number,
-  r10: number,
-  r11: number,
-  r12: number,
-  r20: number,
-  r21: number,
-  r22: number,
-  x: number,
-  y: number,
-  z: number,
+  o: i32,
+  r00: f32,
+  r01: f32,
+  r02: f32,
+  r10: f32,
+  r11: f32,
+  r12: f32,
+  r20: f32,
+  r21: f32,
+  r22: f32,
+  x: f32,
+  y: f32,
+  z: f32,
 ) {
   e[o] = r00;
   e[o + 1] = r10;
@@ -663,33 +664,50 @@ function writeMatrix(
 // T · Ry(yaw) · S at `o`.
 function yawed(
   e: Float32Array,
-  o: number,
-  yaw: number,
-  sx: number,
-  sy: number,
-  sz: number,
-  x: number,
-  y: number,
-  z: number,
+  o: i32,
+  yaw: f32,
+  sx: f32,
+  sy: f32,
+  sz: f32,
+  x: f32,
+  y: f32,
+  z: f32,
 ) {
-  const c = fastCos(yaw);
-  const s = fastSin(yaw);
-  writeMatrix(e, o, c * sx, 0, s * sz, 0, sy, 0, -s * sx, 0, c * sz, x, y, z);
+  const c = Math.fround(fastCos(yaw));
+  const s = Math.fround(fastSin(yaw));
+  const fx = Math.fround(sx);
+  const fz = Math.fround(sz);
+  e[o] = c * fx;
+  e[o + 1] = 0;
+  e[o + 2] = -s * fx;
+  e[o + 3] = 0;
+  e[o + 4] = 0;
+  e[o + 5] = sy;
+  e[o + 6] = 0;
+  e[o + 7] = 0;
+  e[o + 8] = s * fz;
+  e[o + 9] = 0;
+  e[o + 10] = c * fz;
+  e[o + 11] = 0;
+  e[o + 12] = x;
+  e[o + 13] = y;
+  e[o + 14] = z;
+  e[o + 15] = 1;
 }
 
 // T · Ry(yaw) · Rx(pitch) · Rz(roll) · S at `o`.
 function posed(
   e: Float32Array,
-  o: number,
-  yaw: number,
-  pitch: number,
-  roll: number,
-  sx: number,
-  sy: number,
-  sz: number,
-  x: number,
-  y: number,
-  z: number,
+  o: i32,
+  yaw: f32,
+  pitch: f32,
+  roll: f32,
+  sx: f32,
+  sy: f32,
+  sz: f32,
+  x: f32,
+  y: f32,
+  z: f32,
 ) {
   const ca = Math.cos(yaw);
   const sa = Math.sin(yaw);
@@ -716,7 +734,7 @@ function posed(
 }
 
 // A glow at `distance` along `dir`, facing back toward the origin.
-function facing(e: Float32Array, o: number, dir: Float32Array, radius: number, distance: number) {
+function facing(e: Float32Array, o: i32, dir: Float32Array, radius: f32, distance: f32) {
   const bx = -dir[0];
   const by = -dir[1];
   const bz = -dir[2];
@@ -744,7 +762,7 @@ function facing(e: Float32Array, o: number, dir: Float32Array, radius: number, d
   );
 }
 
-function blend(from: number, to: number, t: number): number {
+function blend(from: f32, to: f32, t: f32): f32 {
   return from + (to - from) * t;
 }
 

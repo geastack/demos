@@ -58,39 +58,39 @@ const WAKE_S = 0.8;
 const SINK_DEPTH = 0.16;
 
 export class Prop {
-  kind = KIND_NONE;
-  s = 0;
-  u = 0;
-  size = 1;
-  yaw = 0;
-  phase = 0;
+  kind: i32 = KIND_NONE;
+  s: f32 = 0;
+  u: f32 = 0;
+  size: f32 = 1;
+  yaw: f32 = 0;
+  phase: f32 = 0;
   // Where it sits in the world, and the river's heading and rapids there.
-  x = 0;
-  z = 0;
-  heading = 0;
-  rapids = 0;
+  x: f32 = 0;
+  z: f32 = 0;
+  heading: f32 = 0;
+  rapids: f32 = 0;
 }
 
 // A lantern on its way to its sky slot (rising) or back down to the water.
 export class Flight {
   active = false;
   rising = true;
-  t = 0;
-  slot = 0;
+  t: f32 = 0;
+  slot: i32 = 0;
   // The water end of the trip, in world coordinates.
-  x = 0;
-  y = 0;
-  z = 0;
+  x: f32 = 0;
+  y: f32 = 0;
+  z: f32 = 0;
 }
 
 export class Ripple {
   active = false;
-  t = 0;
-  duration = 1;
-  x = 0;
-  z = 0;
-  radius = 1;
-  strength = 1;
+  t: f32 = 0;
+  duration: f32 = 1;
+  x: f32 = 0;
+  z: f32 = 0;
+  radius: f32 = 1;
+  strength: f32 = 1;
 }
 
 export class World {

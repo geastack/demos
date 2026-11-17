@@ -22,14 +22,24 @@ const WAVE_CALM = 0.08;
 const WAVE_RAPIDS = 0.2;
 
 // Wave height at (s, u) and time t; the shores stay still.
+// Single precision (Math.fround): 0.0566893 is 1 / HALF_WIDTH^2, 0.08 and
+// 0.2 are WAVE_CALM and WAVE_RAPIDS.
 export function waveAt(s: number, u: number, t: number, rapids: number): number {
-  const edge = 1 - (u * u) / (HALF_WIDTH * HALF_WIDTH);
-  const amplitude = (WAVE_CALM + WAVE_RAPIDS * rapids) * edge;
-  return amplitude * (0.6 * fastSin(0.9 * s - 2.2 * t + 0.6 * u) + 0.4 * fastSin(0.37 * s + 1.6 * t - 1.1 * u));
+  const fs = Math.fround(s);
+  const fu = Math.fround(u);
+  const ft = Math.fround(t);
+  const fr = Math.fround(rapids);
+  const edge = Math.fround(1 - Math.fround(Math.fround(fu * fu) * Math.fround(0.0566893)));
+  const amplitude = Math.fround(Math.fround(Math.fround(0.08) + Math.fround(Math.fround(0.2) * fr)) * edge);
+  const a = Math.fround(Math.fround(Math.fround(Math.fround(0.9) * fs) - Math.fround(Math.fround(2.2) * ft)) + Math.fround(Math.fround(0.6) * fu));
+  const b = Math.fround(Math.fround(Math.fround(Math.fround(0.37) * fs) + Math.fround(Math.fround(1.6) * ft)) - Math.fround(Math.fround(1.1) * fu));
+  const wa = Math.fround(fastSin(a));
+  const wb = Math.fround(fastSin(b));
+  return Math.fround(amplitude * Math.fround(Math.fround(Math.fround(0.6) * wa) + Math.fround(Math.fround(0.4) * wb)));
 }
 
 // The banks' mean height `out` units beyond the waterline.
-export function bankHeight(out: number): number {
+export function bankHeight(out: f32): f32 {
   for (let c = 1; c < BANK_COLUMNS; c++) {
     if (out > BANK_OUT[c]) continue;
 
@@ -144,10 +154,10 @@ export class Terrain {
 }
 
 // array[i] = array[i + by] for the first `count` values.
-function moveDown(array: Float32Array, by: number, count: number) {
+function moveDown(array: Float32Array, by: i32, count: i32) {
   for (let i = 0; i < count; i++) array[i] = array[i + by];
 }
 
-function blend(from: number, to: number, t: number): number {
+function blend(from: f32, to: f32, t: f32): f32 {
   return from + (to - from) * t;
 }

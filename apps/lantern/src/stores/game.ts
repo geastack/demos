@@ -10,6 +10,12 @@ export const OVER = 2;
 
 const BEST_KEY = "lantern.best";
 const ESCAPE_KEY = 27;
+const SELECT_KEY = 13;
+const LEFT_KEY = 37;
+const UP_KEY = 38;
+const RIGHT_KEY = 39;
+// A remote click left or right steers as far as a drag this many pixels long.
+const KEY_STEER_PX = 60;
 const MAX_STEP_S = 0.07;
 // Steering: river units per pixel dragged.
 const STEER_GAIN = 0.028;
@@ -63,16 +69,20 @@ class GameStore extends Store {
 
   pointerUp() {
     this.dragging = false;
-    if (this.phase === TITLE) {
-      this.begin();
-      return;
-    }
-
-    if (this.phase === OVER && this.clockMs - this.phaseStartMs > RETRY_GUARD_MS) this.begin();
+    this.press();
   }
 
   key(keyCode: number) {
     if (keyCode === ESCAPE_KEY && this.phase !== TITLE) this.toTitle();
+    else if (keyCode === SELECT_KEY || keyCode === UP_KEY) this.press();
+    else if ((keyCode === LEFT_KEY || keyCode === RIGHT_KEY) && this.phase === RUN)
+      this.world.steer((keyCode === LEFT_KEY ? -KEY_STEER_PX : KEY_STEER_PX) * STEER_GAIN * STEER_SCALE);
+  }
+
+  // A tap or a remote click: start from the title, or retry once the end has settled.
+  private press() {
+    if (this.phase === TITLE) this.begin();
+    else if (this.phase === OVER && this.clockMs - this.phaseStartMs > RETRY_GUARD_MS) this.begin();
   }
 
   private enter(phase: number) {

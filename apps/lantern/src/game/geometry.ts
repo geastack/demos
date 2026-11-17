@@ -26,7 +26,7 @@ export function scale(color: Rgb, factor: number): Rgb {
   return new Rgb(color.r * factor, color.g * factor, color.b * factor);
 }
 
-export function clamp(value: number, low: number, high: number): number {
+export function clamp(value: f32, low: f32, high: f32): f32 {
   return Math.max(low, Math.min(high, value));
 }
 
@@ -42,12 +42,16 @@ const SINE_SCALE = SINE_SIZE / (Math.PI * 2);
 const SINE = new Float32Array(SINE_SIZE);
 for (let i = 0; i < SINE_SIZE; i++) SINE[i] = Math.sin((i * Math.PI * 2) / SINE_SIZE);
 
+// Single precision throughout (Math.fround): the index truncates rather
+// than floors, one table step off for negative angles.
 export function fastSin(x: number): number {
-  return SINE[Math.floor(x * SINE_SCALE) & (SINE_SIZE - 1)];
+  const i: i32 = Math.fround(Math.fround(x) * Math.fround(162.97466));
+  return SINE[i & 1023];
 }
 
 export function fastCos(x: number): number {
-  return SINE[(Math.floor(x * SINE_SCALE) + SINE_SIZE / 4) & (SINE_SIZE - 1)];
+  const i: i32 = Math.fround(Math.fround(x) * Math.fround(162.97466));
+  return SINE[(i + 256) & 1023];
 }
 
 // Indexed triangles (or line segments) with one colour per vertex.
