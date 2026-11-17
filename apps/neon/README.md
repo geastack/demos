@@ -145,3 +145,21 @@ PRODFPS amoled (410x502): not measured (builds clean; board not flashed, flashin
 Copyright 2026 Geastack contributors. GPL-3.0-only; see [LICENSE](LICENSE).
 Third-party dependencies, fonts and assets retain their respective licenses
 and attribution notices.
+
+On Apple TV, press the center of the clickpad to start, jump, or retry.
+Click left or right to change lanes and down to dive. With a motion-capable
+Siri Remote, hold it upright with the buttons facing you. Tilt left or right
+to change one lane, then return to center before tilting again.
+
+The tvOS build currently uses the workspace Core checkout for native 3D
+underlay support. From the parent Geastack directory:
+
+```sh
+GEA_CORE="$PWD/core/packages/core" \
+GEA_APPLE_ROOT="$PWD/apple/packages/geastack-apple" \
+GEA_CLI_BIN="$PWD/cli/bin/gea.mjs" \
+GEA_IOS_CONFIGURATION=Release \
+GEA_IOS_FONT_DEVICE_PIXEL_RATIOS=1 \
+GEA_IOS_FONT_VIEWPORT_WIDTHS=1920 \
+node cli/bin/gea.mjs run --project demos --target tvos --mode device --app neon
+```

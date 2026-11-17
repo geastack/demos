@@ -10,6 +10,11 @@ export const OVER = 2;
 
 const BEST_KEY = "neon.best";
 const ESCAPE_KEY = 27;
+const SELECT_KEY = 13;
+const LEFT_KEY = 37;
+const UP_KEY = 38;
+const RIGHT_KEY = 39;
+const DOWN_KEY = 40;
 const SHARD_POINTS = 25;
 const METRES_PER_POINT = 2;
 // A tap this soon after a crash is still the tap that crashed.
@@ -59,6 +64,10 @@ class GameStore extends Store {
 
   key(keyCode: number) {
     if (keyCode === ESCAPE_KEY && this.phase !== TITLE) this.toTitle();
+    else if (keyCode === SELECT_KEY || keyCode === UP_KEY) this.act(GESTURE_UP);
+    else if (keyCode === DOWN_KEY) this.act(GESTURE_DOWN);
+    else if (keyCode === LEFT_KEY) this.act(GESTURE_LEFT);
+    else if (keyCode === RIGHT_KEY) this.act(GESTURE_RIGHT);
   }
 
   private act(gesture: number) {

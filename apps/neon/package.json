@@ -18,6 +18,7 @@
     "entry": "src/index.tsx",
     "targets": {
       "web": true,
+      "tvos": true,
       "esp32": {
         "psram": { "speed": 120 },
         "flashFreq": 40,
