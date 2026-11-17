@@ -59,9 +59,10 @@ export class HudPainter {
     this.measure();
   }
 
-  paint(image: GeaEmbeddedImage, hud: Hud, heading: number, now: number) {
+  // `terrainDrawn` is true when the terrain was rendered straight into the canvas.
+  paint(image: GeaEmbeddedImage, terrainDrawn: boolean, hud: Hud, heading: number, now: number) {
     this.ctx.beginBatch();
-    this.ctx.drawImage(image, 0, 0);
+    if (!terrainDrawn) this.ctx.drawImage(image, 0, 0);
 
     const chrome = hud.chromeOpacity(now);
     if (chrome > 0) {

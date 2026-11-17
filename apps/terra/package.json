@@ -18,7 +18,12 @@
     "entry": "src/index.tsx",
     "targets": {
       "web": true,
-      "esp32": true,
+      "tvos": { "build": { "display": { "width": 3840, "height": 2160 } } },
+      "esp32": {
+        "psram": { "speed": 120 },
+        "flashFreq": 40,
+        "display": { "copyBack": "dma", "bounceRows": 20 }
+      },
       "stm32": true
     },
     "cssDevicePixelRatio": 1,

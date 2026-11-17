@@ -19,13 +19,22 @@ const ARRIVE_MS = 2200; // fog opens up again as the camera climbs out
 
 // The frame loop: flies the pilot, renders the terrain and the HUD plates
 // natively into a surface, then blits it with the HUD text on top.
+//
+// Two surfaces, alternating: drawImage keeps a reference to the surface rather
+// than a copy, and the display can still be reading the previous frame from it
+// while the next frame renders. With one surface the next frame's strips
+// overwrite it under the reader, left to right, and the terrain is seen
+// half-old, half-new with a seam sweeping across.
 class Flight {
   readonly controls = new Controls();
   readonly pilot = new Pilot();
   readonly hud = new Hud();
 
-  private surface = -1;
-  private image: GeaEmbeddedImage | null = null;
+  private surfaceA = -1;
+  private surfaceB = -1;
+  private imageA: GeaEmbeddedImage | null = null;
+  private imageB: GeaEmbeddedImage | null = null;
+  private front = false; // true: surface B holds the frame being drawn
   private painter: HudPainter | null = null;
   private now = 0;
   private place = 0;
@@ -36,10 +45,12 @@ class Flight {
   private leavingAt = -1; // -1: not leaving
 
   start() {
-    this.surface = surfaceCreate(VIEW_WIDTH, VIEW_HEIGHT);
-    if (this.surface < 0) return;
+    this.surfaceA = surfaceCreate(VIEW_WIDTH, VIEW_HEIGHT);
+    this.surfaceB = surfaceCreate(VIEW_WIDTH, VIEW_HEIGHT);
+    if (this.surfaceA < 0 || this.surfaceB < 0) return;
 
-    this.image = imageFromId(this.surface);
+    this.imageA = imageFromId(this.surfaceA);
+    this.imageB = imageFromId(this.surfaceB);
     this.bake(0);
     requestAnimationFrame((timestamp) => this.frame(timestamp));
   }
@@ -128,8 +139,9 @@ class Flight {
   private draw() {
     const pilot = this.pilot;
     this.hud.queueChrome(pilot.heading / DEGREE, this.now);
-    terraRender(
-      this.surface,
+    this.front = !this.front;
+    const direct = terraRender(
+      this.front ? this.surfaceB : this.surfaceA,
       pilot.x,
       pilot.y,
       pilot.heading,
@@ -140,8 +152,8 @@ class Flight {
     );
 
     const painter = this.painter ?? this.attach();
-    const image = this.image;
-    if (painter && image) painter.paint(image, this.hud, pilot.heading / DEGREE, this.now);
+    const image = this.front ? this.imageB : this.imageA;
+    if (painter && image) painter.paint(image, direct === 1, this.hud, pilot.heading / DEGREE, this.now);
   }
 
   // The canvas exists once the screen has been laid out.

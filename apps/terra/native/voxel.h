@@ -23,7 +23,8 @@ struct Camera {
 class Overlays;
 
 // Renders a view into a width x height frame (width a multiple of the column
-// step, at most 480 x 272 on the STM32 build and 512 x 512 elsewhere), with the HUD overlays blended in. Draws only the sky
+// step, at most 480 x 272 on STM32, 3840 x 2160 on Apple hosts, and
+// 800 x 512 elsewhere), with the HUD overlays blended in. Draws only the sky
 // while the terrain is still baking.
 void renderFrame(const World &world, const Camera &camera, const Overlays &overlays, Pixel *out, int width, int height);
 

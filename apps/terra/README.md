@@ -110,7 +110,7 @@ Harness-checked on the host; `npx --no-install gea build --board mosaico --app t
 The panel size is read once at startup (`src/lib/layout.ts`); the surface, the
 HUD plates, the fonts (small class 12/16/24, large class 14/18/28), the stick
 ranges and the horizon row all follow from it. The native renderer takes any
-surface up to 512 x 512 (480 x 272 on the STM32 build, whose DTCM strip is
+surface up to 800 x 512 (480 x 272 on the STM32 build, whose DTCM strip is
 unchanged) and runs on the ESP32 chips: the STM32-only DTCM placement is
 `#if defined(__arm__)`, the sun scales with the width.
 
@@ -130,3 +130,7 @@ unchanged) and runs on the ESP32 chips: the STM32-only DTCM placement is
 Copyright 2026 Geastack contributors. GPL-3.0-only; see [LICENSE](LICENSE).
 Third-party dependencies, fonts and assets retain their respective licenses
 and attribution notices.
+
+### Apple TV rendering
+
+The tvOS target selects a 3840 × 2160 rendering viewport independently of other targets through `gea.targets.tvos.build.display.width` and `height` in `package.json`. tvOS uses one ray per pixel, interpolated terrain heights, and finer depth steps. Other targets keep their existing quality settings.

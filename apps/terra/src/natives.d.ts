@@ -8,7 +8,11 @@ declare function terraSelect(index: number): number;
 /** Bakes for up to `budgetMs`; 1 once the terrain is ready. */
 declare function terraBake(budgetMs: number): number;
 
-/** Renders the view into a panel-sized surface with the queued overlays. `horizon` is the horizon row, `visibility` 0..1. */
+/**
+ * Renders the view with the queued overlays into a panel-sized surface, or, on hosts that present
+ * the canvas element's own pixels, straight into the canvas (then returns 1 and leaves the surface
+ * untouched). `horizon` is the horizon row, `visibility` 0..1.
+ */
 declare function terraRender(
   surfaceId: number,
   x: number,
@@ -18,7 +22,7 @@ declare function terraRender(
   horizon: number,
   bank: number,
   visibility: number,
-): void;
+): number;
 
 /** Queues a rounded HUD plate for the next frame; `rgb` is 0xRRGGBB, `opacity` 0..1. */
 declare function terraPanel(

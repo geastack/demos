@@ -15,7 +15,7 @@ double bakeStep(double budgetMs);
 
 // Renders the view into a surface the size of the panel, with the overlays
 // queued since the last frame.
-void renderView(double surfaceId, double x, double y, double heading, double altitude, double horizon, double bank,
+double renderView(double surfaceId, double x, double y, double heading, double altitude, double horizon, double bank,
                 double visibility);
 
 // Queues a rounded HUD plate for the next frame; `rgb` is 0xRRGGBB, `opacity` 0..1.
