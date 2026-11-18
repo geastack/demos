@@ -11,7 +11,7 @@ export function RunHud() {
         <span class={CAPTION}>LEVEL</span>
         <span class={VALUE}>{game.level}</span>
         <div class="track level-track">
-          <div class="fill level-fill" style={{ width: `${game.levelProgress}px` }} />
+          <div class="fill level-fill" style={{ transform: `scaleX(${game.levelProgress / 64})` }} />
         </div>
       </div>
       <div class="stat stat-center">
@@ -22,9 +22,9 @@ export function RunHud() {
         <span class={CAPTION}>ENERGY</span>
         <div class="track energy-track">
           {game.energyLow ? (
-            <div class="fill energy-low" style={{ width: `${game.energy}px` }} />
+            <div class="fill energy-low" style={{ transform: `scaleX(${game.energy / 100})` }} />
           ) : (
-            <div class="fill energy-fill" style={{ width: `${game.energy}px` }} />
+            <div class="fill energy-fill" style={{ transform: `scaleX(${game.energy / 100})` }} />
           )}
         </div>
       </div>

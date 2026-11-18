@@ -31,6 +31,8 @@ const MAX_PLANE_SPEED = 1.6;
 const MOVE_RATE = 0.005;
 const PITCH_RATE = 0.0008;
 const ROLL_RATE = 0.0004;
+const ATTITUDE_STEP_MS = 1000 / 60;
+const ATTITUDE_RATE = 0.016;
 const COIN_SPEED = 0.5;
 const ENEMY_SPEED = 0.6;
 const COIN_ENERGY = 3;
@@ -176,6 +178,9 @@ export class World {
     this.knockY = 0;
     this.knockSpeedX = 0;
     this.knockSpeedY = 0;
+    // The attitude eases, so a replay must not start from the crash's nose-dive.
+    this.pitch = 0;
+    this.roll = 0;
   }
 
   // Share of the way to the next level, 0..1.
@@ -219,9 +224,15 @@ export class World {
     const rate = Math.min(1, dt * MOVE_RATE);
     this.planeY += (targetY - this.planeY) * rate;
     this.planeX += (targetX - this.planeX) * rate;
-    // Nose up while climbing, banked while it catches up.
-    this.pitch = (targetY - this.planeY) * dt * PITCH_RATE;
-    this.roll = (this.planeY - targetY) * dt * ROLL_RATE;
+    // Nose up while climbing, banked while it catches up. The attitude follows
+    // the gap alone, at a fixed reference step: scaled by the frame's own dt,
+    // every slower frame (a HUD repaint) snapped the nose while a drag held the
+    // gap open, and the plane visibly jerked a few times a second. It eases
+    // toward that attitude too, since the target itself steps with each touch
+    // sample (~30 a second, out of step with the frames).
+    const attitude = Math.min(1, dt * ATTITUDE_RATE);
+    this.pitch += ((targetY - this.planeY) * ATTITUDE_STEP_MS * PITCH_RATE - this.pitch) * attitude;
+    this.roll += ((this.planeY - targetY) * ATTITUDE_STEP_MS * ROLL_RATE - this.roll) * attitude;
     this.propeller += 0.2 + this.planeSpeed * dt * 0.005;
   }
 
