@@ -10,7 +10,7 @@
   "dependencies": {
     "@demos/shared": "*",
     "@geastack/core": "^0.1.41",
-    "@geastack/gea3d": "^0.1.1"
+    "@geastack/gea3d": "^0.1.2"
   },
   "gea": {
     "id": "lantern",
