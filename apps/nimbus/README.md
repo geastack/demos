@@ -21,20 +21,23 @@ Connect a powered-on board with a USB data cable.
 
 ### Set up Mosaico
 
-Mosaico requires ESP-IDF **6.2-dev** with ESP32-S31 support. Install its toolchain
-into the directory Gea searches for this target:
+Mosaico builds with ESP-IDF **6.2-dev** (ESP-IDF's `master` branch), which has
+ESP32-S31 support. `gea setup` installs it and registers the board:
 
 ```sh
-npx --no-install gea setup --esp-idf --idf-version master --idf-dir "$HOME/esp32/esp-idf-v6.2-dev"
 npx --no-install gea setup
 ```
 
-In the second command, choose **Known supported board**, select **ESP32-S31
-Mosaico**, select its USB identity, and save the alias as **mosaico**. If setup
-offers to build or flash an app, you can skip that step and use the commands
-below. On Windows, use a native
-PowerShell terminal and `$env:USERPROFILE/esp32/esp-idf-v6.2-dev` in place of
-`$HOME/esp32/esp-idf-v6.2-dev`.
+Choose **Known supported board**, select **Espressif
+ESP-Mosaico (V1.2)**, select its USB identity, and keep the suggested alias
+**mosaico**. If setup offers to install a stable ESP-IDF release, decline:
+Mosaico does not use it. If setup offers to build or flash an app, you can
+skip that step and use the commands below. On Windows, use a native
+PowerShell terminal.
+
+Gea selects the matching ESP-IDF installation for each board. Leave
+`IDF_PATH` unset in the terminal you build from: when it is set, every board
+builds with that installation instead.
 
 Confirm the saved board and check the toolchain:
 
@@ -72,9 +75,16 @@ once the downloader connects. Gea resolves the saved board identity.
 
 ### Use the AMOLED 2.06 instead
 
-Run `npx --no-install gea setup`, choose the supported AMOLED 2.06 board and its
-USB identity, and save the alias as **amoled**. Follow setup's ESP-IDF installation
-prompt for that board. Then run:
+The AMOLED 2.06 builds with ESP-IDF **6.0.2**. `gea setup` installs it and
+registers the board:
+
+```sh
+npx --no-install gea setup
+```
+
+Choose **Known supported board**, select **Waveshare ESP32-S3
+Touch AMOLED 2.06**, select its USB identity, and keep the suggested alias
+**amoled**. Then run:
 
 ```sh
 npx --no-install gea run --board amoled --app nimbus
@@ -104,16 +114,19 @@ not currently available in this repository.
 - **Today** (sun-horizon button): the sun's arc from sunrise to sunset, with
   the sun travelling to the current time and the dots behind it lighting up,
   time to sunset (or sunrise) and the day length; beside it **Live from this
-  device**: the MCU's die temperature from `Board.temperature()` (labelled as
+  device**: the MCU's die temperature from `boardTemperature()` (labelled as
   the chip's temperature, not the room's), a 24-second sparkline, and the
-  supply voltage from `Board.supplyVoltage()`.
+  supply voltage from `boardSupply()`.
 - **Demo** (play button): steps through six moments, one per scene, every
   7 s (a bar under the button fills toward the next): a summer day at 11:24,
   an autumn day at 10:12 and 15:36, the summer evening at 20:31 and 23:08,
   and a winter morning at 09:40. Tap again to stop.
 
-Tap above an open sheet, its close button or the USER button to close it;
-the USER button otherwise glides the strip back to now. After 45 s untouched
+Tap above an open sheet or on its close button, or send the Escape key, to close it;
+Escape otherwise glides the strip back to now. Neither Mosaico nor the AMOLED
+2.06 has a button that sends Escape (their side buttons are handled by the
+firmware); send it over USB with
+`npx --no-install gea devctl key 27 --board mosaico`. After 45 s untouched
 the app closes panels and returns to now.
 
 ## How it works
@@ -181,10 +194,10 @@ synthetic sky above it (`scripts/extend-art.py`; flat gradient or mirrored top b
 per scene). The panel shows its bottom `H` rows and middle `W` columns; the sun,
 moon halo, golden-hour glow and clouds are positioned against `SCENE_X/SCENE_Y`
 (where the original scene lands), stars and the shooting star spread over the
-extended sky. The build reports 58% of the app partition free.
+extended sky.
 
 The amoled layout was reviewed by arithmetic only (the canvas does not draw in the
-DOM simulator and the board was taken off limits before it could be flashed).
+DOM simulator); it has not been checked on the board.
 
 ## Live from this device
 
@@ -200,7 +213,7 @@ the full runtime instead of the canvas-only one.
 ## Performance
 
 - mosaico (480x480): PRODFPS 24 on the calm scene (full runtime, native sensors).
-- amoled: not measured (board not flashed).
+- amoled: not measured.
 
 ## License
 

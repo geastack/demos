@@ -1,15 +1,19 @@
 # Terra
 
 A Comanche-style voxel-space flyover (NovaLogic, 1992) on the
-(first on the STM32F746G-Discovery): four procedurally baked landscapes (Alps, Dunes,
+ESP32-S31 Mosaico and the ESP32-S3 AMOLED 2.06 (first on the
+STM32F746G-Discovery): four procedurally baked landscapes (Alps, Dunes,
 Glacier, Mars) rendered per column, front to back, with a y-buffer.
 
 - **Fly:** an autopilot wanders until touched. Drag sideways to turn and bank,
   up and down to climb or dive, hold still to boost, pinch to set the throttle.
   Hands off for 3 s and the autopilot eases back in.
-- **Switch:** tap a chip (or press USER). Fog closes in, the new landscape
-  bakes a slice per frame (its sky and title card show meanwhile), and the
-  camera rises out of its lowest valley.
+- **Switch:** tap a chip (or send the Escape key). Fog closes in, the new
+  landscape bakes a slice per frame (its sky and title card show meanwhile),
+  and the camera rises out of its lowest valley. Neither Mosaico nor the
+  AMOLED 2.06 has a button that sends Escape (their side buttons are handled
+  by the firmware); send it over USB with
+  `npx --no-install gea devctl key 27 --board mosaico`.
 
 ## Run on a board
 
@@ -26,20 +30,23 @@ Connect a powered-on board with a USB data cable.
 
 ### Set up Mosaico
 
-Mosaico requires ESP-IDF **6.2-dev** with ESP32-S31 support. Install its toolchain
-into the directory Gea searches for this target:
+Mosaico builds with ESP-IDF **6.2-dev** (ESP-IDF's `master` branch), which has
+ESP32-S31 support. `gea setup` installs it and registers the board:
 
 ```sh
-npx --no-install gea setup --esp-idf --idf-version master --idf-dir "$HOME/esp32/esp-idf-v6.2-dev"
 npx --no-install gea setup
 ```
 
-In the second command, choose **Known supported board**, select **ESP32-S31
-Mosaico**, select its USB identity, and save the alias as **mosaico**. If setup
-offers to build or flash an app, you can skip that step and use the commands
-below. On Windows, use a native
-PowerShell terminal and `$env:USERPROFILE/esp32/esp-idf-v6.2-dev` in place of
-`$HOME/esp32/esp-idf-v6.2-dev`.
+Choose **Known supported board**, select **Espressif
+ESP-Mosaico (V1.2)**, select its USB identity, and keep the suggested alias
+**mosaico**. If setup offers to install a stable ESP-IDF release, decline:
+Mosaico does not use it. If setup offers to build or flash an app, you can
+skip that step and use the commands below. On Windows, use a native
+PowerShell terminal.
+
+Gea selects the matching ESP-IDF installation for each board. Leave
+`IDF_PATH` unset in the terminal you build from: when it is set, every board
+builds with that installation instead.
 
 Confirm the saved board and check the toolchain:
 
@@ -77,9 +84,16 @@ once the downloader connects. Gea resolves the saved board identity.
 
 ### Use the AMOLED 2.06 instead
 
-Run `npx --no-install gea setup`, choose the supported AMOLED 2.06 board and its
-USB identity, and save the alias as **amoled**. Follow setup's ESP-IDF installation
-prompt for that board. Then run:
+The AMOLED 2.06 builds with ESP-IDF **6.0.2**. `gea setup` installs it and
+registers the board:
+
+```sh
+npx --no-install gea setup
+```
+
+Choose **Known supported board**, select **Waveshare ESP32-S3
+Touch AMOLED 2.06**, select its USB identity, and keep the suggested alias
+**amoled**. Then run:
 
 ```sh
 npx --no-install gea run --board amoled --app terra
@@ -110,8 +124,8 @@ Harness-checked on the host; `npx --no-install gea build --board mosaico --app t
 The panel size is read once at startup (`src/lib/layout.ts`); the surface, the
 HUD plates, the fonts (small class 12/16/24, large class 14/18/28), the stick
 ranges and the horizon row all follow from it. The native renderer takes any
-surface up to 800 x 512 (480 x 272 on the STM32 build, whose DTCM strip is
-unchanged) and runs on the ESP32 chips: the STM32-only DTCM placement is
+surface up to 800 x 512 (3840 x 2160 on Apple hosts, 480 x 272 on the STM32
+build, whose DTCM strip is unchanged) and runs on the ESP32 chips: the STM32-only DTCM placement is
 `#if defined(__arm__)`, the sun scales with the width.
 
 | Board | Panel | Bottom row | Chips |
@@ -123,14 +137,30 @@ unchanged) and runs on the ESP32 chips: the STM32-only DTCM placement is
 ## PRODFPS
 
 - mosaico: ~20 fps (16-23; terrain, HUD and title render).
-- amoled: not measured (board off limits during this port).
+- amoled: not measured.
+
+## Apple TV rendering
+
+The tvOS target selects a 3840 × 2160 rendering viewport independently of other targets through `gea.targets.tvos.build.display.width` and `height` in `package.json`. tvOS uses one ray per pixel, interpolated terrain heights, and finer depth steps. Other targets keep their existing quality settings.
+
+The tvOS build needs a Mac with Xcode and newer GeaStack packages than this
+repository's lockfile installs: `@geastack/targets` 0.1.109 or later (the
+tvOS display setting above), `@geastack/cli` 0.1.112 or later and
+`@geastack/apple`, which is not a dependency here. From the repository root:
+
+```sh
+npm install @geastack/core@latest
+npm install -D @geastack/cli@latest @geastack/targets@latest @geastack/apple@latest
+GEA_IOS_CONFIGURATION=Release npx --no-install gea run --target tvos --mode device --app terra
+```
+
+The two `npm install` commands update `package.json` and `package-lock.json`.
+`--mode device` signs with your Xcode development team (set
+`GEA_IOS_DEVELOPMENT_TEAM` if it is not detected) and installs on a paired
+Apple TV; `--mode simulator` uses the tvOS simulator instead.
 
 ## License
 
 Copyright 2026 Geastack contributors. GPL-3.0-only; see [LICENSE](LICENSE).
 Third-party dependencies, fonts and assets retain their respective licenses
 and attribution notices.
-
-### Apple TV rendering
-
-The tvOS target selects a 3840 × 2160 rendering viewport independently of other targets through `gea.targets.tvos.build.display.width` and `height` in `package.json`. tvOS uses one ray per pixel, interpolated terrain heights, and finer depth steps. Other targets keep their existing quality settings.

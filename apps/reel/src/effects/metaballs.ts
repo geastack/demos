@@ -1,5 +1,5 @@
-import { blend565, buildRamp, HALF_CELLS, HALF_H, HALF_W, HEIGHT, rgb565, sinTurns, upscaleRows } from "../lib/frame";
 import { Simd } from "@geastack/core";
+import { blend565, buildRamp, HALF_CELLS, HALF_H, HALF_W, HEIGHT, rgb565, sinTurns, upscaleRows } from "../lib/frame";
 import { touch } from "../lib/touch";
 
 // The iso-surface of six summed inverse-square fields, at half resolution.

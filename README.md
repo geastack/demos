@@ -6,6 +6,7 @@ Current deployment targets:
 
 - **ESP32-S31 Mosaico** — 480x480
 - **ESP32-S3 AMOLED 2.06"** — 410x502
+
 The original **STM32F746G-Discovery** layout (480x272) is retained, but this
 repository does not provide an STM32 deployment target.
 
@@ -62,14 +63,16 @@ Install the released dependencies from the repository root:
 
 ```sh
 npm ci
-npx --no-install gea setup
-npx --no-install gea boards list
-npx --no-install gea run --board mosaico --app lantern
-npx --no-install gea screenshot --board mosaico
+npx gea setup
+npx gea boards list
+npx gea run --board mosaico --app lantern
+npx gea screenshot --board mosaico
 ```
 
-Register the board as `mosaico` during setup. Mosaico needs ESP-IDF 6.2-dev
-with ESP32-S31 support. Each app's README includes toolchain installation,
+`gea setup` installs the toolchains and registers the board. Mosaico builds
+with ESP-IDF 6.2-dev (ESP-IDF's `master` branch), which has ESP32-S31 support;
+pick the Mosaico and keep the suggested alias `mosaico`. The
+AMOLED 2.06 uses ESP-IDF 6.0.2 and the alias `amoled`. Each app's README includes toolchain installation,
 board registration, build, flash, monitor and capture steps. Follow that
 README before the first deployment; Axel also needs network and API credentials.
 

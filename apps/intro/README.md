@@ -4,7 +4,7 @@ The opening shot of a GeaStack showcase video: the pixel-art Gea logo
 assembles itself on the STM32F746G-Discovery in about eight seconds, then
 holds on the lockup. Tap anywhere to replay.
 
-| Time (s) | Phase | fps on the board |
+| Time (s) | Phase | fps on the STM32F746G-Discovery |
 |---|---|---|
 | 0.0 – 2.05 | A cyan cursor blinks, `> GEA FLASH --BOARD DISCO` types, the board answers `OK` | 59–62 |
 | 1.9 – 3.45 | A dot grid fades up, six circuit traces race in from the edges and draw the base bar from its ends to the stem's root | 37–50 |
@@ -14,8 +14,8 @@ holds on the lockup. Tap anywhere to replay.
 | 6.75 – 7.8 | The hairline grows, "GeaStack" and the tagline rise in | 42–52 |
 | 7.8 → | Hold: the star twinkles, dust drifts, the hairline's gradient flows | 50 |
 
-The tagline is the website's hero headline (`website/index.html`,
-`h1.hero-title`): "Write TypeScript. Build native apps."
+The tagline is the website's hero headline: "Write TypeScript. Build native
+apps."
 
 
 ## Run on a board
@@ -33,20 +33,23 @@ Connect a powered-on board with a USB data cable.
 
 ### Set up Mosaico
 
-Mosaico requires ESP-IDF **6.2-dev** with ESP32-S31 support. Install its toolchain
-into the directory Gea searches for this target:
+Mosaico builds with ESP-IDF **6.2-dev** (ESP-IDF's `master` branch), which has
+ESP32-S31 support. `gea setup` installs it and registers the board:
 
 ```sh
-npx --no-install gea setup --esp-idf --idf-version master --idf-dir "$HOME/esp32/esp-idf-v6.2-dev"
 npx --no-install gea setup
 ```
 
-In the second command, choose **Known supported board**, select **ESP32-S31
-Mosaico**, select its USB identity, and save the alias as **mosaico**. If setup
-offers to build or flash an app, you can skip that step and use the commands
-below. On Windows, use a native
-PowerShell terminal and `$env:USERPROFILE/esp32/esp-idf-v6.2-dev` in place of
-`$HOME/esp32/esp-idf-v6.2-dev`.
+Choose **Known supported board**, select **Espressif
+ESP-Mosaico (V1.2)**, select its USB identity, and keep the suggested alias
+**mosaico**. If setup offers to install a stable ESP-IDF release, decline:
+Mosaico does not use it. If setup offers to build or flash an app, you can
+skip that step and use the commands below. On Windows, use a native
+PowerShell terminal.
+
+Gea selects the matching ESP-IDF installation for each board. Leave
+`IDF_PATH` unset in the terminal you build from: when it is set, every board
+builds with that installation instead.
 
 Confirm the saved board and check the toolchain:
 
@@ -84,9 +87,16 @@ once the downloader connects. Gea resolves the saved board identity.
 
 ### Use the AMOLED 2.06 instead
 
-Run `npx --no-install gea setup`, choose the supported AMOLED 2.06 board and its
-USB identity, and save the alias as **amoled**. Follow setup's ESP-IDF installation
-prompt for that board. Then run:
+The AMOLED 2.06 builds with ESP-IDF **6.0.2**. `gea setup` installs it and
+registers the board:
+
+```sh
+npx --no-install gea setup
+```
+
+Choose **Known supported board**, select **Waveshare ESP32-S3
+Touch AMOLED 2.06**, select its USB identity, and keep the suggested alias
+**amoled**. Then run:
 
 ```sh
 npx --no-install gea run --board amoled --app intro
@@ -141,7 +151,7 @@ start at the panel's own edges and are kept 20 px from the left edge.
 ## PRODFPS
 
 - mosaico: ~27 fps through the hold (the full-panel clear is ~6 ms of PSRAM writes, the panel wire ~12.7 ms).
-- amoled: TBD
+- amoled: not measured.
 
 ## License
 

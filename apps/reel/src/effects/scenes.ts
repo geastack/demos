@@ -159,7 +159,15 @@ export class Scenes {
       const dy = y - CENTRE_Y + 0.5;
       const inner = chord(radius - EDGE, dy);
       const outer = chord(radius + EDGE, dy);
-      this.composeRow(pixels, y * width, (y - first) * width, CENTRE_X - inner, CENTRE_X + inner, CENTRE_X - outer, CENTRE_X + outer);
+      this.composeRow(
+        pixels,
+        y * width,
+        (y - first) * width,
+        CENTRE_X - inner,
+        CENTRE_X + inner,
+        CENTRE_X - outer,
+        CENTRE_X + outer,
+      );
     }
   }
 

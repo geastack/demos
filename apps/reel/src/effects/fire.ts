@@ -1,5 +1,5 @@
-import { buildRamp, HALF_CELLS, HALF_H, HALF_W, hash, HEIGHT, random32, sinTurns, upscaleRows } from "../lib/frame";
 import { Simd } from "@geastack/core";
+import { buildRamp, HALF_CELLS, HALF_H, HALF_W, HEIGHT, hash, random32, sinTurns, upscaleRows } from "../lib/frame";
 import { touch } from "../lib/touch";
 
 // Two layers on a half-resolution field:

@@ -19,20 +19,23 @@ Connect a powered-on board with a USB data cable.
 
 ### Set up Mosaico
 
-Mosaico requires ESP-IDF **6.2-dev** with ESP32-S31 support. Install its toolchain
-into the directory Gea searches for this target:
+Mosaico builds with ESP-IDF **6.2-dev** (ESP-IDF's `master` branch), which has
+ESP32-S31 support. `gea setup` installs it and registers the board:
 
 ```sh
-npx --no-install gea setup --esp-idf --idf-version master --idf-dir "$HOME/esp32/esp-idf-v6.2-dev"
 npx --no-install gea setup
 ```
 
-In the second command, choose **Known supported board**, select **ESP32-S31
-Mosaico**, select its USB identity, and save the alias as **mosaico**. If setup
-offers to build or flash an app, you can skip that step and use the commands
-below. On Windows, use a native
-PowerShell terminal and `$env:USERPROFILE/esp32/esp-idf-v6.2-dev` in place of
-`$HOME/esp32/esp-idf-v6.2-dev`.
+Choose **Known supported board**, select **Espressif
+ESP-Mosaico (V1.2)**, select its USB identity, and keep the suggested alias
+**mosaico**. If setup offers to install a stable ESP-IDF release, decline:
+Mosaico does not use it. If setup offers to build or flash an app, you can
+skip that step and use the commands below. On Windows, use a native
+PowerShell terminal.
+
+Gea selects the matching ESP-IDF installation for each board. Leave
+`IDF_PATH` unset in the terminal you build from: when it is set, every board
+builds with that installation instead.
 
 Confirm the saved board and check the toolchain:
 
@@ -70,9 +73,16 @@ once the downloader connects. Gea resolves the saved board identity.
 
 ### Use the AMOLED 2.06 instead
 
-Run `npx --no-install gea setup`, choose the supported AMOLED 2.06 board and its
-USB identity, and save the alias as **amoled**. Follow setup's ESP-IDF installation
-prompt for that board. Then run:
+The AMOLED 2.06 builds with ESP-IDF **6.0.2**. `gea setup` installs it and
+registers the board:
+
+```sh
+npx --no-install gea setup
+```
+
+Choose **Known supported board**, select **Waveshare ESP32-S3
+Touch AMOLED 2.06**, select its USB identity, and keep the suggested alias
+**amoled**. Then run:
 
 ```sh
 npx --no-install gea run --board amoled --app wander
@@ -98,8 +108,11 @@ not currently available in this repository.
   taste and a sight as cards, and a "Plan my trip" button in the
   destination's accent. Tapping it saves the trip ("Saved to your trips" with
   a popping check); tapping again removes it. Saved trips persist in
-  `localStorage`. The back chevron or the USER button returns to Discover;
-  after a minute untouched it returns by itself.
+  `localStorage`. The back chevron or the Escape key returns to Discover;
+  after a minute untouched it returns by itself. Neither Mosaico nor the
+  AMOLED 2.06 has a button that sends Escape (their side buttons are handled
+  by the firmware); send it over USB with
+  `npx --no-install gea devctl key 27 --board mosaico`.
 
 ## How the motion works
 
@@ -153,16 +166,16 @@ synthetic sky above it (`scripts/extend-art.py`; flat gradient or mirrored top
 band per poster; re-running it re-crops the original first). The panel shows the
 image's bottom `H` rows (landscape: the poster exactly) and its middle `W` columns
 when narrower than 480 (crop offsets per destination in `layout.ts`). The firmware
-embeds one image set; the build reports 54% of the app partition free.
+embeds one image set.
 
-The amoled layout was checked in the DOM simulator at 410x502 only: the board was
-taken off limits before it could be flashed.
+The amoled layout was checked in the DOM simulator at 410x502 only; it has not
+been checked on the board.
 
 ## Performance
 
 - mosaico (480x480): PRODFPS 62.5 at rest on Discover, ~45 during a poster slide
   (a full 480x480 frame takes ~12.7 ms on the 80 MHz QSPI wire alone).
-- amoled: not measured (board not flashed).
+- amoled: not measured.
 
 ## License
 

@@ -20,7 +20,7 @@ class AgentStore extends Store {
         this.message = "Camera unavailable. Check the left slot.";
         return;
       }
-      this.previewHeight = Math.round(224 * Camera.height / Camera.width);
+      this.previewHeight = Math.round((224 * Camera.height) / Camera.width);
       this.preview = true;
     } else {
       this.preview = false;

@@ -19,9 +19,15 @@
     "targets": {
       "web": true,
       "esp32": {
-        "psram": { "speed": 120 },
+        "psram": {
+          "speed": 120
+        },
         "flashFreq": 40,
-        "display": { "copyBack": "dma", "bounceRows": 10, "gridStrips": true }
+        "display": {
+          "copyBack": "dma",
+          "bounceRows": 10,
+          "gridStrips": true
+        }
       },
       "stm32": true
     },

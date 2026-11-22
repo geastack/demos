@@ -1,4 +1,4 @@
-import { blend565, buildRamp, HALF_H, HALF_W, hash, HEIGHT, rgb565, sinTurns, WIDTH } from "../lib/frame";
+import { blend565, buildRamp, HALF_H, HALF_W, HEIGHT, hash, rgb565, sinTurns, WIDTH } from "../lib/frame";
 import { touch } from "../lib/touch";
 
 // A textured tunnel flight through angle/depth lookup tables, rendered at

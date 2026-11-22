@@ -40,7 +40,7 @@ function drawDot(ctx: CanvasRenderingContext2D, column: number, row: number, col
   ctx.fillRect(x, y, pitch, pitch);
   ctx.fillStyle = COLORS[color] ?? "#10292c";
   ctx.beginPath();
-  ctx.arc(x + pitch / 2, y + pitch / 2, (color === 0 ? 1.25 : color === 1 ? 1.8 : 2.75) * pitch / 8, 0, Math.PI * 2);
+  ctx.arc(x + pitch / 2, y + pitch / 2, ((color === 0 ? 1.25 : color === 1 ? 1.8 : 2.75) * pitch) / 8, 0, Math.PI * 2);
   ctx.fill();
 }
 
@@ -132,7 +132,9 @@ export function paint(elapsedSeconds: number, phase: string, level: number, prev
     pitch = preview ? 4 : 8;
     left = preview ? 12 : 16;
     top = preview ? 80 : 28;
-    const canvas = document.getElementById(preview ? "axel-face-compact" : "axel-face") as unknown as GeaCanvasElement | null;
+    const canvas = document.getElementById(
+      preview ? "axel-face-compact" : "axel-face",
+    ) as unknown as GeaCanvasElement | null;
     if (canvas) context = canvas.getContext("2d");
     previous.fill(255);
     context.fillStyle = BACKGROUND;

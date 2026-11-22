@@ -662,17 +662,7 @@ function writeMatrix(
 }
 
 // T · Ry(yaw) · S at `o`.
-function yawed(
-  e: Float32Array,
-  o: i32,
-  yaw: f32,
-  sx: f32,
-  sy: f32,
-  sz: f32,
-  x: f32,
-  y: f32,
-  z: f32,
-) {
+function yawed(e: Float32Array, o: i32, yaw: f32, sx: f32, sy: f32, sz: f32, x: f32, y: f32, z: f32) {
   const c = Math.fround(fastCos(yaw));
   const s = Math.fround(fastSin(yaw));
   const fx = Math.fround(sx);

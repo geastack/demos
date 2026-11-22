@@ -38,12 +38,12 @@ export function hash(n: number): number {
 
 // sin(x) from a 1024-entry table: for per-vertex and per-prop animation.
 const SINE_SIZE = 1024;
-const SINE_SCALE = SINE_SIZE / (Math.PI * 2);
 const SINE = new Float32Array(SINE_SIZE);
 for (let i = 0; i < SINE_SIZE; i++) SINE[i] = Math.sin((i * Math.PI * 2) / SINE_SIZE);
 
 // Single precision throughout (Math.fround): the index truncates rather
-// than floors, one table step off for negative angles.
+// than floors, one table step off for negative angles. 162.97466 is
+// SINE_SIZE / (2 * PI).
 export function fastSin(x: number): number {
   const i: i32 = Math.fround(Math.fround(x) * Math.fround(162.97466));
   return SINE[i & 1023];

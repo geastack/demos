@@ -38,20 +38,23 @@ Connect a powered-on board with a USB data cable.
 
 ### Set up Mosaico
 
-Mosaico requires ESP-IDF **6.2-dev** with ESP32-S31 support. Install its toolchain
-into the directory Gea searches for this target:
+Mosaico builds with ESP-IDF **6.2-dev** (ESP-IDF's `master` branch), which has
+ESP32-S31 support. `gea setup` installs it and registers the board:
 
 ```sh
-npx --no-install gea setup --esp-idf --idf-version master --idf-dir "$HOME/esp32/esp-idf-v6.2-dev"
 npx --no-install gea setup
 ```
 
-In the second command, choose **Known supported board**, select **ESP32-S31
-Mosaico**, select its USB identity, and save the alias as **mosaico**. If setup
-offers to build or flash an app, you can skip that step and use the commands
-below. On Windows, use a native
-PowerShell terminal and `$env:USERPROFILE/esp32/esp-idf-v6.2-dev` in place of
-`$HOME/esp32/esp-idf-v6.2-dev`.
+Choose **Known supported board**, select **Espressif
+ESP-Mosaico (V1.2)**, select its USB identity, and keep the suggested alias
+**mosaico**. If setup offers to install a stable ESP-IDF release, decline:
+Mosaico does not use it. If setup offers to build or flash an app, you can
+skip that step and use the commands below. On Windows, use a native
+PowerShell terminal.
+
+Gea selects the matching ESP-IDF installation for each board. Leave
+`IDF_PATH` unset in the terminal you build from: when it is set, every board
+builds with that installation instead.
 
 Confirm the saved board and check the toolchain:
 

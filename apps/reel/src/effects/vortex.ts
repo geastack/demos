@@ -139,7 +139,7 @@ export class Vortex {
       const xb: i32 = cx + ((((sine[((tb >> 6) + 256) & 1023] * r) >> 10) * sb) >> 12);
       const yb: i32 = cy + ((((sine[(tb >> 6) & 1023] * r) >> 10) * sb) >> 12);
 
-      const nearness: i32 = (((pn >> 1) * (pn >> 1)) >> 14) * 150 >> 16; // depth phase squared, 0..150
+      const nearness: i32 = ((((pn >> 1) * (pn >> 1)) >> 14) * 150) >> 16; // depth phase squared, 0..150
       const value: i32 = 24 + nearness;
       const thick = pn > THICK_PHASE;
 

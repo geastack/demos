@@ -7,8 +7,20 @@ export default class App extends Component {
       <div class={agent.preview ? "axel-console previewing" : "axel-console"}>
         <canvas id="axel-face" class="axel-face" width={352} height={264} />
         <canvas id="axel-face-compact" class="axel-face-compact" width={184} height={264} />
-        {agent.preview && <camera class="axel-preview" facing="back" fit="contain" mirror={false} style={{ height: agent.previewHeight }} />}
-        <button class="axel-preview-control" disabled={agent.phase === "closing" || agent.phase === "connecting"} onClick={() => agent.togglePreview()}>
+        {agent.preview && (
+          <camera
+            class="axel-preview"
+            facing="back"
+            fit="contain"
+            mirror={false}
+            style={{ height: agent.previewHeight }}
+          />
+        )}
+        <button
+          class="axel-preview-control"
+          disabled={agent.phase === "closing" || agent.phase === "connecting"}
+          onClick={() => agent.togglePreview()}
+        >
           {agent.preview ? "Hide camera" : "Preview camera"}
         </button>
         <div class="axel-readout">
@@ -51,12 +63,17 @@ export default class App extends Component {
             disabled={agent.phase === "closing" || agent.phase === "connecting"}
             onClick={() => agent.toggleCamera()}
           >
-            <div class={
-              !agent.cameraEnabled ? "axel-camera-light" :
-              agent.phase === "error" ? "axel-camera-light unavailable" :
-              agent.active && !agent.sharing ? "axel-camera-light waiting" :
-              "axel-camera-light ready"
-            } />
+            <div
+              class={
+                !agent.cameraEnabled
+                  ? "axel-camera-light"
+                  : agent.phase === "error"
+                    ? "axel-camera-light unavailable"
+                    : agent.active && !agent.sharing
+                      ? "axel-camera-light waiting"
+                      : "axel-camera-light ready"
+              }
+            />
             <div class="axel-camera-button-label">{agent.cameraEnabled ? "Camera on" : "Camera off"}</div>
           </button>
         </div>

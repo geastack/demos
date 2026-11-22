@@ -1,7 +1,7 @@
 // The audio lifecycle is adapted from Geastack Spark (GPL-3.0-only).
 import type { MediaStream, PcmAudioStream, WebSocketConstructor, WebSocketInstance } from "@geastack/core";
 import type { RealtimeSessionConfig, TurnDetectionConfig } from "../config/session.js";
-import { createSessionConfig, AXEL_INSTRUCTIONS, WAKE_PHRASE } from "../config/session.ts";
+import { AXEL_INSTRUCTIONS, createSessionConfig, WAKE_PHRASE } from "../config/session.ts";
 import type { ConversationPhase } from "./phases.js";
 
 declare const WebSocket: WebSocketConstructor;
@@ -175,7 +175,9 @@ export class RealtimeSession {
 
     socket.onerror = (event) => {
       if (generation === this.generation) {
-        this.fail(event.message && event.message !== "error" ? event.message : "Connection failed. Tap Start to retry.");
+        this.fail(
+          event.message && event.message !== "error" ? event.message : "Connection failed. Tap Start to retry.",
+        );
       }
     };
 
@@ -465,7 +467,8 @@ export class RealtimeSession {
         if (!this.fullDuplex && this.microphone) {
           this.audio?.setInput(this.microphone);
         }
-        if (this.audio && this.socket) this.audio.pipeTo(this.socket, '{"type":"input_audio_buffer.append","audio":"', '"}');
+        if (this.audio && this.socket)
+          this.audio.pipeTo(this.socket, '{"type":"input_audio_buffer.append","audio":"', '"}');
 
         this.opening = false;
         if (this.openingTimeout !== null) {

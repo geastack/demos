@@ -18,12 +18,9 @@ const BANK_BASE = [0.02, 0.42, 0.7, 0.9];
 const BANK_RISE = [0, 0.26, 0.5, 2.4];
 const BANK_COLORS = [SHORE, BANK, MEADOW, FAR_LAND];
 
-const WAVE_CALM = 0.08;
-const WAVE_RAPIDS = 0.2;
-
 // Wave height at (s, u) and time t; the shores stay still.
 // Single precision (Math.fround): 0.0566893 is 1 / HALF_WIDTH^2, 0.08 and
-// 0.2 are WAVE_CALM and WAVE_RAPIDS.
+// 0.2 are the calm and rapids wave heights.
 export function waveAt(s: number, u: number, t: number, rapids: number): number {
   const fs = Math.fround(s);
   const fu = Math.fround(u);
@@ -31,8 +28,14 @@ export function waveAt(s: number, u: number, t: number, rapids: number): number 
   const fr = Math.fround(rapids);
   const edge = Math.fround(1 - Math.fround(Math.fround(fu * fu) * Math.fround(0.0566893)));
   const amplitude = Math.fround(Math.fround(Math.fround(0.08) + Math.fround(Math.fround(0.2) * fr)) * edge);
-  const a = Math.fround(Math.fround(Math.fround(Math.fround(0.9) * fs) - Math.fround(Math.fround(2.2) * ft)) + Math.fround(Math.fround(0.6) * fu));
-  const b = Math.fround(Math.fround(Math.fround(Math.fround(0.37) * fs) + Math.fround(Math.fround(1.6) * ft)) - Math.fround(Math.fround(1.1) * fu));
+  const a = Math.fround(
+    Math.fround(Math.fround(Math.fround(0.9) * fs) - Math.fround(Math.fround(2.2) * ft)) +
+      Math.fround(Math.fround(0.6) * fu),
+  );
+  const b = Math.fround(
+    Math.fround(Math.fround(Math.fround(0.37) * fs) + Math.fround(Math.fround(1.6) * ft)) -
+      Math.fround(Math.fround(1.1) * fu),
+  );
   const wa = Math.fround(fastSin(a));
   const wb = Math.fround(fastSin(b));
   return Math.fround(amplitude * Math.fround(Math.fround(Math.fround(0.6) * wa) + Math.fround(Math.fround(0.4) * wb)));

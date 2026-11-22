@@ -6,7 +6,7 @@
     "useIgnoreFile": true
   },
   "files": {
-    "includes": ["apps/*/src/**", "apps/*/package.json", "shared/**", "!shared/gea3d/**", "scripts/**", "package.json"]
+    "includes": ["apps/*/src/**", "apps/*/package.json", "shared/**", "!shared/gea3d", "scripts/**", "package.json"]
   },
   "formatter": {
     "enabled": true,
@@ -36,8 +36,9 @@
         "noNonNullAssertion": "off"
       },
       // Touch-first board app with embedded TTF fonts and no screen reader: keyboard handlers, generic font
-      // fallbacks and image alt text do not apply.
+      // fallbacks, image alt text and form button types do not apply.
       "a11y": {
+        "useButtonType": "off",
         "noStaticElementInteractions": "off",
         "useAltText": "off",
         "useKeyWithClickEvents": "off",
