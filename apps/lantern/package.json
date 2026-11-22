@@ -20,9 +20,25 @@
       "web": true,
       "tvos": true,
       "esp32": {
-        "psram": { "speed": 120 },
-        "flashFreq": 40,
-        "display": { "copyBack": "dma", "bounceRows": 10, "gridStrips": true }
+        "display": {
+          "copyBack": "dma",
+          "bounceRows": 10,
+          "gridStrips": true
+        },
+        "boards": {
+          "esp32-s3-elecrow-crowpanel-advance-7.0": {
+            "psram": {
+              "speed": 120
+            },
+            "flashFreq": 40
+          },
+          "esp32-p4-elecrow-crowpanel-advanced-5.0": {
+            "defines": {
+              "GEA_EMBEDDED_RGB_KEEP_VSYNC": 1,
+              "GEA_EMBEDDED_DISPLAY_REPLAY_SRAM_STAGE": 1
+            }
+          }
+        }
       },
       "stm32": true
     },
