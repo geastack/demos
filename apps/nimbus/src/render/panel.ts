@@ -1,4 +1,4 @@
-import { CLOSE_DY, CLOSE_X, H, MARGIN, TODAY_H, WEEK_H } from "../layout";
+import { CLOSE_DY, CLOSE_X, H, MARGIN, px, TODAY_H, WEEK_H } from "../layout";
 import { easeOut, progress } from "../motion";
 import { BUTTON_CLOSE, shell, WEEK } from "../stores/shell";
 import { button, sheet } from "./glass";
@@ -43,7 +43,7 @@ export function panelEnter(now: number, delay: number): number {
 /** The sheet, its title and caption, and the close button. */
 export function paintSheet(p: Painter, theme: Theme, top: number, title: string, caption: string, titleWidth: number) {
   sheet(p, theme, top);
-  p.text(title, MARGIN + 4, top + 12, TITLE_FONT, theme.ink, 1);
-  p.text(caption, MARGIN + 4 + titleWidth + 10, top + 19, CAPTION_FONT, theme.soft, 1);
+  p.text(title, MARGIN + 4, top + px(12), TITLE_FONT, theme.ink, 1);
+  p.text(caption, MARGIN + 4 + titleWidth + px(10), top + px(19), CAPTION_FONT, theme.soft, 1);
   button(p, theme, CLOSE_X, top + CLOSE_DY, UI_CLOSE, shell.pressed === BUTTON_CLOSE, 1);
 }

@@ -28,7 +28,10 @@
           "-Wl,-u,temperature_sensor_enable",
           "-Wl,-u,temperature_sensor_get_celsius",
           "-Wl,-u,temperature_sensor_uninstall"
-        ]
+        ],
+        "display": {
+          "present": "async"
+        }
       },
       "stm32": true
     },

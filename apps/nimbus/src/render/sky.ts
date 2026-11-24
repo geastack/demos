@@ -196,15 +196,25 @@ class Sky {
     }
   }
 
-  paint(p: Painter, now: number) {
-    // The illustration, cross-fading to the next one.
-    p.image(this.scenes[this.from], SCENE_X, ART_TOP, 1);
+  /**
+   * The illustration (cross-fading to the next one) and the dusk tint. Drawn
+   * first, and followed directly by the screen's other full-colour glass, so
+   * the display can hand the frame a buffer with all of it already blended
+   * in; the moving layers come after, in `paintLayers`.
+   */
+  paintBackdrop(p: Painter, now: number) {
+    // Settle a finished fade before drawing: drawing `from` first would put
+    // the previous scene back on screen for the fade's last frame.
     const fade = this.fadeProgress(now);
+    if (fade >= 1) this.from = this.to;
+    p.image(this.scenes[this.from], SCENE_X, ART_TOP, 1);
     if (fade < 1) p.image(this.scenes[this.to], SCENE_X, ART_TOP, easeInOut(fade));
-    else this.from = this.to;
 
-    const levels = this.levels;
-    p.rect(0, 0, W, H, DUSK_COLOR, levels[DUSK] * 0.4);
+    p.rect(0, 0, W, H, DUSK_COLOR, this.levels[DUSK] * 0.4);
+  }
+
+  /** Stars, orbs, clouds, rain, snow and the boot reveal, over the backdrop. */
+  paintLayers(p: Painter, now: number) {
     this.paintStars(p, now);
     this.paintOrbs(p);
     this.paintClouds(p);

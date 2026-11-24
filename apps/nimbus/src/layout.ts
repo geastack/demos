@@ -13,7 +13,18 @@ export const SQUARE = !WIDE && !PORTRAIT;
 export const STACKED = W < 440;
 // Extra clearance from the rounded corners of the AMOLED panel.
 export const EDGE = PORTRAIT ? 14 : 0;
-export const MARGIN = PORTRAIT ? 20 : 16;
+export const MARGIN = PORTRAIT ? 20 : SQUARE ? 32 : 16;
+
+// The square panel (Mosaico) is small and dense, with round corners: type,
+// icons and glass are drawn 1.4x larger there, from their own baked sizes and
+// sprites (the "-xl" assets), and the corners are kept clear explicitly.
+export const S = SQUARE ? 1.4 : 1;
+export const ASSET = SQUARE ? "-xl" : "";
+
+/** A length laid out at 1x, at this panel's scale. */
+export function px(length: number): number {
+  return Math.round(length * S);
+}
 
 // ---- Illustrations: one 480x502 image per scene ----
 // The 480x272 scene sits at the bottom of the image with a synthetic sky
@@ -27,38 +38,43 @@ export const SCENE_X = W >= 480 ? Math.floor((W - 480) / 2) : -Math.min(70, 480 
 export const SCENE_Y = H - 272;
 
 // ---- Now ----
-export const BUTTON_Y = 26 + EDGE;
-export const BUTTON_X = [W - 122, W - 78, W - 34];
-export const CLOCK_Y = 8 + EDGE;
+export const BUTTON_Y = SQUARE ? 50 : 26 + EDGE;
+export const BUTTON_X = SQUARE ? [W - 174, W - 112, W - 50] : [W - 122, W - 78, W - 34];
+export const CLOCK_Y = SQUARE ? 32 : 8 + EDGE;
 export const HERO_X = WIDE ? 12 : MARGIN - 4;
-export const HERO_Y = WIDE ? 24 : 40 + EDGE;
-// The hero numeral's line box: 94 px at 80 px type, 132 px at 112.
-export const HERO_LINE = WIDE ? 94 : 132;
+export const HERO_Y = WIDE ? 24 : SQUARE ? 64 : 40 + EDGE;
+// The hero numeral's line box: 94 px at 80 px type, 132 at 112, 165 at 140.
+export const HERO_LINE = WIDE ? 94 : SQUARE ? 165 : 132;
 export const CONDITION_Y = HERO_Y + HERO_LINE;
-export const DETAILS_Y = CONDITION_Y + 28;
-export const CHIPS_Y = DETAILS_Y + 24;
-export const HERO_FONT = WIDE ? "80px Outfit XL" : "112px Outfit XL";
+export const DETAILS_Y = CONDITION_Y + px(28);
+export const CHIPS_Y = DETAILS_Y + px(24);
+export const HERO_FONT = WIDE ? "80px Outfit XL" : SQUARE ? "140px Outfit XL" : "112px Outfit XL";
 
 // ---- The hourly strip ----
-export const STRIP_H = 68;
+export const STRIP_H = SQUARE ? 96 : 68;
 // Clear of the panel's rounded bottom corners.
-export const STRIP_PAD = PORTRAIT ? 14 : 0;
+export const STRIP_PAD = PORTRAIT ? 14 : SQUARE ? 10 : 0;
 export const STRIP_TOP = H - STRIP_H - STRIP_PAD;
-export const STRIP_LEFT = PORTRAIT ? 16 : 8; // the focus slot's left edge
+export const STRIP_LEFT = PORTRAIT ? 16 : SQUARE ? 30 : 8; // the focus slot's left edge
+export const CELL_W = SQUARE ? 72 : 52;
 
 // ---- Panels ----
-export const ROW_H = WIDE ? 24 : 32;
-export const ROWS_DY = 50;
-export const WEEK_H = ROWS_DY + 7 * ROW_H + (WIDE ? 2 : 16);
+export const ROW_H = WIDE ? 24 : px(32);
+export const ROWS_DY = px(50);
+export const WEEK_H = ROWS_DY + 7 * ROW_H + (WIDE ? 2 : px(16));
 // Today: the sun arc and this device's readings, side by side or stacked.
-export const TODAY_H = STACKED ? 424 : WIDE ? 220 : 236;
-export const CLOSE_X = W - 32;
-export const CLOSE_DY = 26;
+export const TODAY_H = STACKED ? 424 : WIDE ? 220 : px(236);
+export const CLOSE_X = SQUARE ? W - 50 : W - 32;
+export const CLOSE_DY = px(26);
 
-// Week track.
-export const TRACK_W = W - 296;
-export const TRACK_X = 208;
-export const HIGH_RIGHT = W - 40;
+// Week columns: name, icon, chance of rain, low, the track, high.
+export const NAME_X = MARGIN + 4;
+export const ICON_X = SQUARE ? 98 : 84;
+export const PRECIP_X = SQUARE ? 134 : 110;
+export const LOW_RIGHT = SQUARE ? 224 : 196;
+export const TRACK_X = SQUARE ? 236 : 208;
+export const HIGH_RIGHT = SQUARE ? W - 36 : W - 40;
+export const TRACK_W = HIGH_RIGHT - px(48) - TRACK_X;
 
-// ---- Boot ----
-export const BOOT_DY = Math.floor((H - 272) / 2);
+// ---- Boot: the 480x272 composition, scaled about the panel's middle ----
+export const BOOT_MID = Math.floor(H / 2);

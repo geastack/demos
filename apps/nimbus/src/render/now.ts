@@ -10,6 +10,7 @@ import {
   HERO_X,
   HERO_Y,
   MARGIN,
+  px,
   STRIP_H,
   STRIP_PAD,
   W,
@@ -23,6 +24,7 @@ import type { Painter } from "./painter";
 import {
   BODY_FONT,
   CAPTION_FONT,
+  SMALL_ICON,
   type Theme,
   TITLE_FONT,
   UI_DROP,
@@ -32,14 +34,15 @@ import {
   UI_UMBRELLA,
   UI_WEEK,
   UI_WIND,
+  WEATHER_ICON,
 } from "./palette";
 
 // Layout (px, see layout.ts). The hero column sits over the sky on the left,
 // clear of the moon at the top left; the panel buttons top right; the strip
 // at the bottom.
-const CHIP_GAP = 8;
+const CHIP_GAP = px(8);
 const DEMO_STEP_MS = 7000;
-const DEMO_BAR_W = 24;
+const DEMO_BAR_W = px(24);
 
 // Entrances after the boot: delay and duration (ms) per group.
 const ENTER_TOP = 200;
@@ -48,7 +51,7 @@ const ENTER_TEXT = 120;
 const ENTER_CHIPS = 180;
 const ENTER_STRIP = 100;
 const ENTER_MS = 460;
-const RISE = 10; // px a rising element travels
+const RISE = px(10); // px a rising element travels
 
 // The Now screen, drawn over the sky every frame: the clock and panel
 // buttons, the temperature (rolling between readings), the condition with
@@ -92,11 +95,11 @@ class NowView {
     const textAlpha = enterText * shown;
     p.text(forecast.condition, MARGIN, CONDITION_Y + textY, TITLE_FONT, theme.ink, textAlpha);
     if (forecast.when !== "") {
-      const x = MARGIN + this.conditionWidth + 10;
-      const width = this.whenWidth + 20;
+      const x = MARGIN + this.conditionWidth + px(10);
+      const width = this.whenWidth + px(20);
       pill(p, theme, x, CONDITION_Y + 1 + textY, width, true, textAlpha);
       const y = CONDITION_Y + 1 + PILL_H * 0.5 - this.captionCenter + textY;
-      p.text(forecast.when, x + 10, y, CAPTION_FONT, theme.ink, textAlpha);
+      p.text(forecast.when, x + px(10), y, CAPTION_FONT, theme.ink, textAlpha);
     }
 
     p.text(forecast.details, MARGIN, DETAILS_Y + textY, BODY_FONT, theme.ink, textAlpha);
@@ -142,8 +145,9 @@ class NowView {
     // Under the demo button: fills toward the next demo step.
     const fill = ((now - shell.demoAt) % DEMO_STEP_MS) / DEMO_STEP_MS;
     const left = BUTTON_X[2] - DEMO_BAR_W * 0.5;
-    p.rect(left, BUTTON_Y + 22, DEMO_BAR_W, 3, theme.mute, theme.muteAlpha);
-    p.rect(left, BUTTON_Y + 22, Math.round(DEMO_BAR_W * fill), 3, theme.ink, 1);
+    const barY = BUTTON_Y + px(22);
+    p.rect(left, barY, DEMO_BAR_W, px(3), theme.mute, theme.muteAlpha);
+    p.rect(left, barY, Math.round(DEMO_BAR_W * fill), px(3), theme.ink, 1);
   }
 
   private paintChips(p: Painter, theme: Theme, now: number, shown: number) {
@@ -161,21 +165,37 @@ class NowView {
 
   // One chip: icon and value on a glass pill; returns where the next starts.
   private chip(p: Painter, theme: Theme, x: number, icon: number, text: string, textWidth: number, alpha: number) {
-    const width = Math.round(textWidth) + 36;
+    const width = Math.round(textWidth) + px(36);
     pill(p, theme, x, CHIPS_Y, width, false, alpha);
-    p.image(theme.ui[icon], x + 9, CHIPS_Y + 5, alpha);
-    p.text(text, x + 27, CHIPS_Y + PILL_H * 0.5 - this.bodyCenter, BODY_FONT, theme.ink, alpha);
+    p.image(theme.ui[icon], x + px(9), CHIPS_Y + (PILL_H - SMALL_ICON) / 2, alpha);
+    p.text(text, x + px(27), CHIPS_Y + PILL_H * 0.5 - this.bodyCenter, BODY_FONT, theme.ink, alpha);
     return x + width + CHIP_GAP;
   }
 
-  // Glass band, the fixed focus slot, and the cells sliding under it.
-  private paintStrip(p: Painter, theme: Theme, now: number, shown: number) {
+  /**
+   * The strip's glass band. Drawn right after the sky's backdrop, before the
+   * sky's moving layers: a full-width translucent band over the still
+   * illustration is part of what the display can blend in ahead of time.
+   */
+  paintGlass(p: Painter, theme: Theme, now: number, covered: number) {
+    const shown = 1 - covered;
+    if (shown < 0.01) return;
+
+    const top = this.stripTop(now);
+    p.rect(0, top, W, STRIP_H + STRIP_PAD, theme.glass, theme.glassAlpha * shown);
+    p.rect(0, top, W, 1, theme.hi, theme.hiAlpha * 0.6 * shown);
+  }
+
+  private stripTop(now: number): number {
     const enter = this.enter(now, ENTER_STRIP);
-    const top = STRIP_TOP + Math.round((1 - enter) * (STRIP_H + STRIP_PAD));
+    return STRIP_TOP + Math.round((1 - enter) * (STRIP_H + STRIP_PAD));
+  }
+
+  // The fixed focus slot over the glass band, and the cells sliding under it.
+  private paintStrip(p: Painter, theme: Theme, now: number, shown: number) {
+    const top = this.stripTop(now);
     const alpha = shown;
-    p.rect(0, top, W, STRIP_H + STRIP_PAD, theme.glass, theme.glassAlpha * alpha);
-    p.rect(0, top, W, 1, theme.hi, theme.hiAlpha * 0.6 * alpha);
-    p.image(theme.focus, STRIP_LEFT + 2, top + 4, alpha);
+    p.image(theme.focus, STRIP_LEFT + 2, top + px(4), alpha);
 
     const offset = strip.offset;
     for (let i = 0; i < HOUR_COUNT; i++) {
@@ -184,11 +204,11 @@ class NowView {
 
       const center = x + CELL_W * 0.5;
       const focused = i === forecast.selected;
-      if (forecast.midnight[i]) p.rect(x, top + 12, 1, 46, theme.mute, theme.muteAlpha * alpha);
+      if (forecast.midnight[i]) p.rect(x, top + px(12), 1, px(46), theme.mute, theme.muteAlpha * alpha);
       const labelColor = focused ? theme.ink : theme.soft;
-      p.text(forecast.labels[i], center - this.labelWidth[i] * 0.5, top + 8, CAPTION_FONT, labelColor, alpha);
-      p.image(theme.icons[forecast.icons[i]], center - 10, top + 25, alpha);
-      p.text(forecast.temps[i], center - this.tempWidth[i] * 0.5, top + 46, BODY_FONT, theme.ink, alpha);
+      p.text(forecast.labels[i], center - this.labelWidth[i] * 0.5, top + px(8), CAPTION_FONT, labelColor, alpha);
+      p.image(theme.icons[forecast.icons[i]], center - WEATHER_ICON / 2, top + px(25), alpha);
+      p.text(forecast.temps[i], center - this.tempWidth[i] * 0.5, top + px(46), BODY_FONT, theme.ink, alpha);
     }
   }
 }

@@ -1,12 +1,19 @@
 import type { GeaEmbeddedImage } from "@geastack/core";
 import { loadAssetImage } from "@geastack/core";
+import { ASSET, SQUARE } from "../layout";
 
 // Fonts: each (family, size) pair is baked by a rule in styles/app.css.
-export const NUMERAL_FONT = "40px Outfit L";
-export const WORDMARK_FONT = "48px Outfit L";
-export const TITLE_FONT = "20px Outfit M";
-export const BODY_FONT = "14px Outfit M";
-export const CAPTION_FONT = "12px Outfit M";
+// The square panel takes the 1.4x sizes (layout.ts).
+export const NUMERAL_FONT = SQUARE ? "56px Outfit L" : "40px Outfit L";
+export const WORDMARK_FONT = SQUARE ? "64px Outfit L" : "48px Outfit L";
+export const TITLE_FONT = SQUARE ? "28px Outfit M" : "20px Outfit M";
+export const BODY_FONT = SQUARE ? "20px Outfit M" : "14px Outfit M";
+export const CAPTION_FONT = SQUARE ? "17px Outfit M" : "12px Outfit M";
+
+// Icon sizes (icons.config.json, and its "-xl" set for the square panel).
+export const WEATHER_ICON = SQUARE ? 28 : 20;
+export const SMALL_ICON = SQUARE ? 20 : 14;
+export const BUTTON_ICON = SQUARE ? 26 : 18;
 
 // Glass alphas are multiples of 0.2 so rectangles match the sprite pieces
 // (scripts/make-glass.py) to the byte.
@@ -82,15 +89,15 @@ export class Theme {
     this.hiAlpha = dark ? 0.2 : 0.8;
     this.sheet = dark ? "rgb(8,16,32)" : "rgb(240,244,240)";
     for (let i = 0; i < CONDITION_ICONS.length; i++) {
-      this.icons.push(loadAssetImage(`icons/${CONDITION_ICONS[i]}-${suffix}.png`));
+      this.icons.push(loadAssetImage(`icons/${CONDITION_ICONS[i]}-${suffix}${ASSET}.png`));
     }
-    for (let i = 0; i < UI_ICONS.length; i++) this.ui.push(loadAssetImage(`icons/${UI_ICONS[i]}-${suffix}.png`));
-    this.capLeft = loadAssetImage(`ui/cap-left-glass-${suffix}.png`);
-    this.capRight = loadAssetImage(`ui/cap-right-glass-${suffix}.png`);
-    this.hiLeft = loadAssetImage(`ui/cap-left-hi-${suffix}.png`);
-    this.hiRight = loadAssetImage(`ui/cap-right-hi-${suffix}.png`);
-    this.focus = loadAssetImage(`ui/focus-hi-${suffix}.png`);
-    this.cornerLeft = loadAssetImage(`ui/corner-left-sheet-${suffix}.png`);
-    this.cornerRight = loadAssetImage(`ui/corner-right-sheet-${suffix}.png`);
+    for (let i = 0; i < UI_ICONS.length; i++) this.ui.push(loadAssetImage(`icons/${UI_ICONS[i]}-${suffix}${ASSET}.png`));
+    this.capLeft = loadAssetImage(`ui/cap-left-glass-${suffix}${ASSET}.png`);
+    this.capRight = loadAssetImage(`ui/cap-right-glass-${suffix}${ASSET}.png`);
+    this.hiLeft = loadAssetImage(`ui/cap-left-hi-${suffix}${ASSET}.png`);
+    this.hiRight = loadAssetImage(`ui/cap-right-hi-${suffix}${ASSET}.png`);
+    this.focus = loadAssetImage(`ui/focus-hi-${suffix}${ASSET}.png`);
+    this.cornerLeft = loadAssetImage(`ui/corner-left-sheet-${suffix}${ASSET}.png`);
+    this.cornerRight = loadAssetImage(`ui/corner-right-sheet-${suffix}${ASSET}.png`);
   }
 }

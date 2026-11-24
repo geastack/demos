@@ -1,9 +1,9 @@
 import { DAY_COUNT, type Forecast } from "../data/weather";
-import { TRACK_W } from "../layout";
+import { px, TRACK_W } from "../layout";
 
 export { TRACK_W };
 
-export const BAR_H = 6;
+export const BAR_H = px(6);
 
 // Week gradients, cold to hot along the track: per palette three
 // RGB565-snapped stops (left end, middle, right end).

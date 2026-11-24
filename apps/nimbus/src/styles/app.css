@@ -65,3 +65,38 @@
   font-family: "Outfit M";
   font-size: 12px;
 }
+
+/* The square panel's 1.4x sizes (layout.ts). */
+
+.font-hero-xl {
+  font-family: "Outfit XL";
+  font-size: 140px;
+  --gea-font-charset: "0123456789-°";
+}
+
+.font-numeral-xl {
+  font-family: "Outfit L";
+  font-size: 56px;
+  --gea-font-charset: "0123456789.-°";
+}
+
+.font-wordmark-xl {
+  font-family: "Outfit L";
+  font-size: 64px;
+  --gea-font-charset: "Nimbus";
+}
+
+.font-title-xl {
+  font-family: "Outfit M";
+  font-size: 28px;
+}
+
+.font-body-xl {
+  font-family: "Outfit M";
+  font-size: 20px;
+}
+
+.font-caption-xl {
+  font-family: "Outfit M";
+  font-size: 17px;
+}

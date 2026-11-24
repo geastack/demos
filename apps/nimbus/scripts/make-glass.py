@@ -36,19 +36,28 @@ def save(image, name):
     image.save(os.path.join(OUT, f"{name}.png"), optimize=True)
 
 
+# suffix: (pill height, focus slot w/h/radius, sheet corner) -- keep in step
+# with src/render/glass.ts and src/layout.ts. "-xl" is the square panel's 1.4x set.
+SIZES = {
+    "": (24, (48, 58, 14), 18),
+    "-xl": (34, (68, 82, 20), 25),
+}
+
 os.makedirs(OUT, exist_ok=True)
-for tone in ("glass-d", "hi-d", "glass-l", "hi-l"):
-    rgb, alpha = TONES[tone]
-    pill = rounded(24, 24, 12, rgb, alpha, None)
-    save(pill.crop((0, 0, 12, 24)), f"cap-left-{tone}")
-    save(pill.crop((12, 0, 24, 24)), f"cap-right-{tone}")
-for tone in ("hi-d", "hi-l"):
-    rgb, alpha = TONES[tone]
-    save(rounded(48, 58, 14, rgb, alpha, None), f"focus-{tone}")
-for tone in ("sheet-d", "sheet-l"):
-    rgb, alpha = TONES[tone]
-    corner = rounded(36, 36, 18, rgb, alpha, None)
-    save(corner.crop((0, 0, 18, 18)), f"corner-left-{tone}")
-    save(corner.crop((18, 0, 36, 18)), f"corner-right-{tone}")
+for size, (pill_h, (focus_w, focus_h, focus_r), corner_r) in SIZES.items():
+    cap = pill_h // 2
+    for tone in ("glass-d", "hi-d", "glass-l", "hi-l"):
+        rgb, alpha = TONES[tone]
+        pill = rounded(pill_h, pill_h, cap, rgb, alpha, None)
+        save(pill.crop((0, 0, cap, pill_h)), f"cap-left-{tone}{size}")
+        save(pill.crop((cap, 0, pill_h, pill_h)), f"cap-right-{tone}{size}")
+    for tone in ("hi-d", "hi-l"):
+        rgb, alpha = TONES[tone]
+        save(rounded(focus_w, focus_h, focus_r, rgb, alpha, None), f"focus-{tone}{size}")
+    for tone in ("sheet-d", "sheet-l"):
+        rgb, alpha = TONES[tone]
+        corner = rounded(2 * corner_r, 2 * corner_r, corner_r, rgb, alpha, None)
+        save(corner.crop((0, 0, corner_r, corner_r)), f"corner-left-{tone}{size}")
+        save(corner.crop((corner_r, 0, 2 * corner_r, corner_r)), f"corner-right-{tone}{size}")
 print("glass drawn")
 

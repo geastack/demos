@@ -50,24 +50,31 @@ class Renderer {
     const now = Date.now();
     strip.update(now);
     sky.step(now);
-    sky.paint(p, now);
-    if (!shell.booting) this.paintApp(p, now);
+    const theme = this.themes[forecast.dark ? 1 : 0];
+    const app = !shell.booting;
+    const rise = app ? this.rise(now) : 0;
+    sky.paintBackdrop(p, now);
+    if (app) nowView.paintGlass(p, theme, now, rise);
+    sky.paintLayers(p, now);
+    if (app) this.paintApp(p, theme, now, rise);
     bootView.paint(p, now);
     p.present();
     requestAnimationFrame(() => this.frame());
   }
 
-  private paintApp(p: Painter, now: number) {
-    const theme = this.themes[forecast.dark ? 1 : 0];
-    let rise = 0;
-    if (shell.shownPanel !== NONE) {
-      rise = panelRise(now);
-      if (shell.closing && rise <= 0) {
-        shell.shownPanel = NONE;
-        shell.closing = false;
-      }
-    }
+  // How far the shown panel has risen (0..1); closes it once it is down.
+  private rise(now: number): number {
+    if (shell.shownPanel === NONE) return 0;
 
+    const rise = panelRise(now);
+    if (shell.closing && rise <= 0) {
+      shell.shownPanel = NONE;
+      shell.closing = false;
+    }
+    return rise;
+  }
+
+  private paintApp(p: Painter, theme: Theme, now: number, rise: number) {
     nowView.paint(p, theme, now, rise);
     if (shell.shownPanel === NONE) return;
 

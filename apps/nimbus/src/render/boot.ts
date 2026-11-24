@@ -1,6 +1,6 @@
 import type { GeaEmbeddedImage } from "@geastack/core";
 import { loadAssetImage } from "@geastack/core";
-import { BOOT_DY, W } from "../layout";
+import { BOOT_MID, px, W } from "../layout";
 import { easeOut, progress } from "../motion";
 import { shell } from "../stores/shell";
 import type { Painter } from "./painter";
@@ -11,7 +11,7 @@ const TAGLINE = "Weather, at home";
 const WORD_COLOR = "rgb(248,252,248)";
 const TAGLINE_COLOR = "rgb(168,184,208)";
 const MARK_X = Math.floor(W / 2) - 8;
-const MARK_Y = 66 + BOOT_DY;
+const MARK_Y = BOOT_MID - px(70);
 const OUT_MS = 380;
 
 // The first two seconds, on the night blue the sky starts from: a sun rises
@@ -43,14 +43,14 @@ class BootView {
     const alpha = 1 - out;
     const sunRise = easeOut(progress(now, this.startedAt, 150, 760));
     const drift = easeOut(progress(now, this.startedAt, 0, 900));
-    p.circle(MARK_X + 12 - (1 - sunRise) * 6, MARK_Y - 10 + (1 - sunRise) * 18, 13, SUN_GOLD, alpha * sunRise);
+    p.circle(MARK_X + 12 - (1 - sunRise) * 6, MARK_Y - 10 + (1 - sunRise) * 18, px(13), SUN_GOLD, alpha * sunRise);
     p.image(this.cloud[0], MARK_X - 36 - 16 * (1 - drift), MARK_Y - 14, alpha * drift);
 
     const word = easeOut(progress(now, this.startedAt, 350, 520));
     p.text(
       WORDMARK,
       W * 0.5 - this.wordWidth * 0.5,
-      98 + BOOT_DY + (1 - word) * 10,
+      BOOT_MID - px(38) + (1 - word) * 10,
       WORDMARK_FONT,
       WORD_COLOR,
       alpha * word,
@@ -59,7 +59,7 @@ class BootView {
     p.text(
       TAGLINE,
       W * 0.5 - this.taglineWidth * 0.5,
-      160 + BOOT_DY + (1 - tagline) * 10,
+      BOOT_MID + px(24) + (1 - tagline) * 10,
       BODY_FONT,
       TAGLINE_COLOR,
       alpha * tagline,

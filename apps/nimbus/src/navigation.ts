@@ -1,5 +1,5 @@
 import { MOMENTS } from "./data/weather";
-import { BUTTON_X, BUTTON_Y, CLOSE_DY, CLOSE_X } from "./layout";
+import { BUTTON_X, BUTTON_Y, CLOSE_DY, CLOSE_X, px } from "./layout";
 import { sheetRest } from "./render/panel";
 import { sky } from "./render/sky";
 import { forecast } from "./stores/forecast";
@@ -23,7 +23,7 @@ const DEMO_STEP_MS = 7000;
 const IDLE_MS = 45_000;
 const CLOCK_TICK_MS = 5000;
 const ESCAPE_KEY = 27;
-const HIT = 22; // half a button's touch target
+const HIT = px(22); // half a button's touch target
 
 let demoTimer = -1;
 let stripTouch = false;

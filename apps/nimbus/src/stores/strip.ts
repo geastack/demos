@@ -1,12 +1,11 @@
-import { STRIP_LEFT, STRIP_TOP } from "../layout";
+import { CELL_W, px, STRIP_LEFT, STRIP_TOP } from "../layout";
 import { forecast } from "./forecast";
 
-export { STRIP_LEFT, STRIP_TOP };
+export { CELL_W, STRIP_LEFT, STRIP_TOP };
 
-export const CELL_W = 52;
 const LAST = 23; // the furthest hour the focus can reach
 const MAX_OFFSET = LAST * CELL_W;
-const TAP_SLOP = 8;
+const TAP_SLOP = px(8);
 const GLIDE_MS = 320; // how far a release velocity carries the strip
 const MIN_SLIDE_MS = 200;
 const SLIDE_MS_PER_CELL = 70;
