@@ -38,9 +38,8 @@ Mosaico does not use it. If setup offers to build or flash an app, you can
 skip that step and use the commands below. On Windows, use a native
 PowerShell terminal.
 
-Gea selects the matching ESP-IDF installation for each board. Leave
-`IDF_PATH` unset in the terminal you build from: when it is set, every board
-builds with that installation instead.
+Gea selects the matching ESP-IDF installation for each board. An `IDF_PATH`
+set in your terminal is used only when it is the version that board needs.
 
 Confirm the saved board and check the toolchain:
 
