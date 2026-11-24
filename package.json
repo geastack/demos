@@ -14,13 +14,15 @@
   },
   "dependencies": {
     "@geajs/core": "^1.5.1",
-    "@geastack/core": "^0.1.53",
-    "@geastack/gea3d": "^0.1.2"
+    "@geastack/core": "^0.1.58",
+    "@geastack/engine": "^0.1.27",
+    "@geastack/gea3d": "^0.1.2",
+    "@geastack/host": "^0.1.24"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.14",
-    "@geastack/apple": "^0.2.26",
-    "@geastack/cli": "^0.1.117",
+    "@geastack/apple": "^0.2.28",
+    "@geastack/cli": "^0.1.124",
     "@geastack/compiler": "^1.0.49",
     "@geastack/geatsc-plugin-gea": "^0.1.28",
     "@geastack/targets": "^0.1.114",

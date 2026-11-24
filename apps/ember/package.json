@@ -18,6 +18,7 @@
     "entry": "src/index.tsx",
     "targets": {
       "web": true,
+      "macos": true,
       "esp32": true,
       "stm32": true
     },

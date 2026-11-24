@@ -129,32 +129,37 @@ class Orbit {
       this.tiltSpeed = 0;
     }
 
-    if (this.tapping && now - this.tapMs < TAP_MS) this.nextTheme(now);
+    if (this.tapping && now - this.tapMs < TAP_MS) this.nextTheme();
     this.tapping = false;
   }
 
-  private nextTheme(now: number) {
+  private nextTheme() {
     this.theme = (this.theme + 1) % THEME_COUNT;
-    this.popS = (now - this.startMs) / 1000;
+    this.popS = (this.lastMs - this.startMs) / 1000;
     this.yawSpeed += POP_SPIN;
   }
 
-  // Builds the gem on the first frame, then renders every frame.
+  // Builds the gem on the first frame, then renders every frame. Animation
+  // time comes from requestAnimationFrame, so it follows the frame clock
+  // (and a prerender's simulated timeline) rather than the wall clock.
   private run() {
     const stage = new Stage();
-    this.startMs = Date.now();
-    this.lastMs = this.startMs;
+    let started = false;
 
-    const frame = () => {
-      this.advance(stage);
+    const frame = (timeMs: number) => {
+      if (!started) {
+        this.startMs = timeMs;
+        this.lastMs = timeMs;
+        started = true;
+      }
+      this.advance(stage, timeMs);
       stage.render();
       requestAnimationFrame(frame);
     };
     requestAnimationFrame(frame);
   }
 
-  private advance(stage: Stage) {
-    const now = Date.now();
+  private advance(stage: Stage, now: number) {
     const dt = Math.min(0.05, (now - this.lastMs) / 1000);
     const t = (now - this.startMs) / 1000;
     this.lastMs = now;
